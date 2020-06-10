@@ -6,6 +6,10 @@ const Store = require('electron-store');
 
 const { channels } = require('../src/shared/constants');
 
+ks.setOption('startDelayMillisec', 0);
+ks.setOption('globalDelayPressMillisec ', 0);
+ks.setOption('globalDelayBetweenMillisec ', 0);
+
 const store = new Store({
   schema: {
     selectedInputName: {
@@ -42,18 +46,20 @@ ipcMain.on(channels.SET_CONFIG, (event, key, value) => {
 
 ipcMain.on(channels.SEND_KEY, async (event, eventData) => {
   const { key, eventTime } = eventData;
+
   const sendStartTime = Date.now();
+  const timeToMainThread = Math.max(0, eventTime - sendStartTime);
+  console.log(`SEND_KEY event react->node:${timeToMainThread}ms`);
+
   try {
     await ks.sendKey(key);
   } catch (e) {
     console.log('SEND_KEY error', e);
   }
+
   const doneTime = Date.now();
-  const timeToMainThread = Math.max(0, eventTime - sendStartTime);
   const timeToOS = Math.max(0, doneTime - sendStartTime);
-  console.log(
-    `SEND_KEY event react->node:${timeToMainThread}ms node->OS:${timeToOS}ms`
-  );
+  console.log(`SEND_KEY event node<->OS:${timeToOS}ms`);
 });
 
 function createWindow() {
