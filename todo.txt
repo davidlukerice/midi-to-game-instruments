@@ -1,7 +1,8 @@
 
-- Anything I can do about the latency issues?
+- Latency still an issue, but a bit better after swapping to robotjs
 - Auto change octaves when playing a note on a different octave?
 -- ie, gw2 instruments have a set octave you need to change through
+- robotjs chord issue. Any chance I can batch notes within 10ms together?
 - keymap selector
 - UI that shows a piano and keypresses
 - Better ui for configuring note->key map

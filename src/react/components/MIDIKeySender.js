@@ -31,25 +31,38 @@ function MIDIKeySender(props) {
       return;
     }
 
-    const handler = (e) => {
+    const noteOnHandler = (e) => {
       const mapKey = `${e.note.name}${e.note.octave}`;
       const key = keyMap[mapKey];
       const keyTime = Date.now();
-      console.log(`${mapKey} -> '${key}'`);
+      console.log(`noteOn ${mapKey} -> '${key}'`);
 
       if (!key) {
         return;
       }
-      ipcRenderer.send(channels.SEND_KEY, { key, eventTime: keyTime });
+      ipcRenderer.send(channels.SEND_KEY_ON, { key, eventTime: keyTime });
     };
 
-    selectedInput.addListener('noteon', 'all', handler);
+    const noteOffHandler = (e) => {
+      const mapKey = `${e.note.name}${e.note.octave}`;
+      const key = keyMap[mapKey];
+      const keyTime = Date.now();
+
+      if (!key) {
+        return;
+      }
+      ipcRenderer.send(channels.SEND_KEY_OFF, { key, eventTime: keyTime });
+    };
+
+    selectedInput.addListener('noteon', 'all', noteOnHandler);
+    selectedInput.addListener('noteoff', 'all', noteOffHandler);
 
     return () => {
       if (!selectedInput) {
         return;
       }
-      selectedInput.removeListener('noteon', 'all', handler);
+      selectedInput.removeListener('noteon', 'all', noteOnHandler);
+      selectedInput.removeListener('noteoff', 'all', noteOffHandler);
     };
   }, [selectedInput]);
 
