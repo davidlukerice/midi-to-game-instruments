@@ -1,0 +1,8 @@
+
+- Anything I can do about the latency issues?
+- Auto change octaves when playing a note on a different octave?
+-- ie, gw2 instruments have a set octave you need to change through
+- keymap selector
+- UI that shows a piano and keypresses
+- Better ui for configuring note->key map
+- Automatically play through a song

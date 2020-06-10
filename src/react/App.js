@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { ThemeProvider } from '@chakra-ui/core';
 
-import { channels } from '../shared/constants';
+import { ConfigContextProvider, useConfig } from './hooks/useConfig';
 import { MidiContextProvider, useMIDI } from './hooks/useMIDI';
 import MIDIDisplay from './components/MIDIDisplay';
 import MIDIKeySender from './components/MIDIKeySender';
@@ -9,26 +9,14 @@ import MIDISelect from './components/MIDISelect';
 
 import styles from './App.module.css';
 
-const { ipcRenderer } = window;
-
 function App() {
-  const [state, setState] = useState({
-    appName: '',
-    appVersion: '',
-  });
+  const config = useConfig();
   const midi = useMIDI();
 
-  useEffect(() => {
-    ipcRenderer.send(channels.APP_INFO);
-    ipcRenderer.on(channels.APP_INFO, (event, arg) => {
-      ipcRenderer.removeAllListeners(channels.APP_INFO);
-      const { appName, appVersion } = arg;
-      setState({ appName, appVersion });
-    });
-  }, []);
-
   let content;
-  if (midi.isLoading) {
+  if (config.isLoading) {
+    content = <div>Config loading...</div>;
+  } else if (midi.isLoading) {
     content = <div>MIDI loading...</div>;
   } else if (midi.error) {
     content = <div>Error starting midi</div>;
@@ -42,12 +30,11 @@ function App() {
     );
   }
 
-  const { appName, appVersion } = state;
   return (
     <div className={styles.app}>
       <header className="App-header">
         <p>
-          {appName} version {appVersion}
+          {config.appName} v{config.appVersion}
         </p>
       </header>
       <div>{content}</div>
@@ -57,8 +44,10 @@ function App() {
 
 export default (props) => (
   <ThemeProvider>
-    <MidiContextProvider>
-      <App {...props} />
-    </MidiContextProvider>
+    <ConfigContextProvider>
+      <MidiContextProvider>
+        <App {...props} />
+      </MidiContextProvider>
+    </ConfigContextProvider>
   </ThemeProvider>
 );

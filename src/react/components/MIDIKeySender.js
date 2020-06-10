@@ -6,6 +6,7 @@ const { ipcRenderer } = window;
 
 export default MIDIKeySender;
 
+// gw2 harp keymap
 const keyMap = {
   C4: '1',
   D4: '2',
@@ -15,8 +16,9 @@ const keyMap = {
   A4: '6',
   B4: '7',
   C5: '8',
-  D5: '9',
-  E5: '0',
+
+  D5: '9', // down octave
+  E5: '0', // up octave
 };
 
 function MIDIKeySender(props) {
@@ -32,12 +34,13 @@ function MIDIKeySender(props) {
     const handler = (e) => {
       const mapKey = `${e.note.name}${e.note.octave}`;
       const key = keyMap[mapKey];
+      const keyTime = Date.now();
       console.log(`${mapKey} -> '${key}'`);
 
       if (!key) {
         return;
       }
-      ipcRenderer.send(channels.SEND_KEY, { key });
+      ipcRenderer.send(channels.SEND_KEY, { key, eventTime: keyTime });
     };
 
     selectedInput.addListener('noteon', 'all', handler);

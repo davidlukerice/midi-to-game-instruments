@@ -1,6 +1,7 @@
 module.exports = {
   channels: {
-    APP_INFO: 'app_info',
+    GET_CONFIG: 'config_get',
+    SET_CONFIG: 'config_set',
     SEND_KEY: 'send_key',
   },
 };

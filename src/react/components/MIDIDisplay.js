@@ -34,8 +34,7 @@ function MIDIDisplay(props) {
         <div key={i}>{message}</div>
       ))}
       <br />
-      Input used for testing key press
-      <input />
+      Input used for testing key press <input />
     </div>
   );
 }
