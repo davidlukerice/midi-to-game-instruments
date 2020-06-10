@@ -1,9 +1,13 @@
 import WebMidi from 'webmidi';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
-export { useMIDI };
+const MIDIContext = React.createContext();
 
-function useMIDI() {
+export { MidiContextProvider, useMIDI };
+
+function MidiContextProvider(props) {
+  const { children } = props;
+
   const [state, setState] = useState({
     isLoading: true,
     error: null,
@@ -11,6 +15,7 @@ function useMIDI() {
     inputs: [],
     outputs: [],
     selectedInput: null,
+    selectInputByName,
   });
 
   useEffect(() => {
@@ -28,6 +33,7 @@ function useMIDI() {
         const input = WebMidi.inputs[0]
           ? WebMidi.getInputByName(WebMidi.inputs[0].name)
           : null;
+        console.log('*** input', input);
         setState((curr) => ({
           ...curr,
           isLoading: false,
@@ -40,16 +46,18 @@ function useMIDI() {
     });
   }, []);
 
-  const selectInputByName = (inputName) => {
+  return <MIDIContext.Provider value={state}>{children}</MIDIContext.Provider>;
+
+  function selectInputByName(inputName) {
     const input = WebMidi.getInputByName(inputName);
     setState((curr) => ({
       ...curr,
       selectedInput: input,
     }));
-  };
+  }
+}
 
-  return {
-    ...state,
-    selectInputByName,
-  };
+function useMIDI() {
+  // TODO: Guard against no context
+  return useContext(MIDIContext);
 }

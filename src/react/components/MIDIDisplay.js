@@ -32,8 +32,8 @@ function MIDIDisplay(props) {
 
   return (
     <div>
-      {midiMessages.map((message) => (
-        <div>{message}</div>
+      {midiMessages.map((message, i) => (
+        <div key={i}>{message}</div>
       ))}
     </div>
   );

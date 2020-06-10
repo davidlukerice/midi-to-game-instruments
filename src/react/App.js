@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { ThemeProvider } from '@chakra-ui/core';
 
 import { channels } from '../shared/constants';
-import { useMIDI } from './hooks/useMIDI';
+import { MidiContextProvider, useMIDI } from './hooks/useMIDI';
 import MIDIDisplay from './components/MIDIDisplay';
 import MIDISelect from './components/MIDISelect';
 
@@ -34,9 +35,7 @@ function App() {
     content = (
       <>
         <MIDISelect />
-        <p>
-          <MIDIDisplay />
-        </p>
+        <MIDIDisplay />
       </>
     );
   }
@@ -54,4 +53,10 @@ function App() {
   );
 }
 
-export default App;
+export default (props) => (
+  <ThemeProvider>
+    <MidiContextProvider>
+      <App {...props} />
+    </MidiContextProvider>
+  </ThemeProvider>
+);
