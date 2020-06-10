@@ -27,13 +27,11 @@ function MidiContextProvider(props) {
           error: err,
         }));
       } else {
-        console.log(WebMidi.inputs);
-        console.log(WebMidi.outputs);
-
+        // TODO: Remember previously selected midi input
         const input = WebMidi.inputs[0]
           ? WebMidi.getInputByName(WebMidi.inputs[0].name)
           : null;
-        console.log('*** input', input);
+
         setState((curr) => ({
           ...curr,
           isLoading: false,

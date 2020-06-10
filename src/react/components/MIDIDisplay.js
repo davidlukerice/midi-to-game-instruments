@@ -1,33 +1,31 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMIDI } from '../hooks/useMIDI';
 
 export default MIDIDisplay;
 
 function MIDIDisplay(props) {
   const { selectedInput } = useMIDI();
-  const oldSelectedRef = useRef(null);
   const [midiMessages, setMidiMessages] = useState([]);
 
   useEffect(() => {
-    console.log(
-      '**** adding eventListener to',
-      selectedInput ? selectedInput.name : 'none'
-    );
-
-    if (oldSelectedRef.current) {
-      oldSelectedRef.current.removeListener('noteon');
-    }
-
     if (!selectedInput) {
       return;
     }
 
-    selectedInput.addListener('noteon', 'all', function (e) {
-      console.log('noteon: ' + e.value);
-      setMidiMessages((curr) => [`noteon: ${e.value}`, ...curr].slice(0, 10));
-    });
+    const handler = (e) => {
+      const message = `noteon: ${e.note.name} ${e.note.octave}`;
+      setMidiMessages((curr) => [message, ...curr].slice(0, 10));
+    };
 
-    selectedInput.current = selectedInput;
+    selectedInput.addListener('noteon', 'all', handler);
+
+    return () => {
+      if (!selectedInput) {
+        return;
+      }
+
+      selectedInput.removeListener('noteon', 'all', handler);
+    };
   }, [selectedInput]);
 
   return (
@@ -35,6 +33,9 @@ function MIDIDisplay(props) {
       {midiMessages.map((message, i) => (
         <div key={i}>{message}</div>
       ))}
+      <br />
+      Input used for testing key press
+      <input />
     </div>
   );
 }

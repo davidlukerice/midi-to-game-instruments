@@ -4,6 +4,7 @@ import { ThemeProvider } from '@chakra-ui/core';
 import { channels } from '../shared/constants';
 import { MidiContextProvider, useMIDI } from './hooks/useMIDI';
 import MIDIDisplay from './components/MIDIDisplay';
+import MIDIKeySender from './components/MIDIKeySender';
 import MIDISelect from './components/MIDISelect';
 
 import styles from './App.module.css';
@@ -36,6 +37,7 @@ function App() {
       <>
         <MIDISelect />
         <MIDIDisplay />
+        <MIDIKeySender />
       </>
     );
   }

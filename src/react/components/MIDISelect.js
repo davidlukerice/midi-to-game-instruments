@@ -17,13 +17,18 @@ function MIDISelect(props) {
     midi.selectInputByName(event.target.value);
   }
 
+  const selectedValue = midi.selectedInput ? midi.selectedInput.name : '';
+
   return (
-    <Select placeholder="Select MIDI Input" onChange={onChangeHandler}>
-      {midi.inputs.map((input) => (
-        <option key={input.name} value={input.name}>
-          {input.name}
-        </option>
-      ))}
-    </Select>
+    <div>
+      <span>Select a MIDI input</span>
+      <Select value={selectedValue} onChange={onChangeHandler}>
+        {midi.inputs.map((input) => (
+          <option key={input.name} value={input.name}>
+            {input.name}
+          </option>
+        ))}
+      </Select>
+    </div>
   );
 }

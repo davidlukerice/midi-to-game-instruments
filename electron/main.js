@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const url = require('url');
+const ks = require('node-key-sender');
 
 const { channels } = require('../src/shared/constants');
 
@@ -44,4 +45,13 @@ ipcMain.on(channels.APP_INFO, (event) => {
     appName: app.getName(),
     appVersion: app.getVersion(),
   });
+});
+
+ipcMain.on(channels.SEND_KEY, async (event, eventData) => {
+  const { key } = eventData;
+  try {
+    await ks.sendKey(key);
+  } catch (e) {
+    console.log('SEND_KEY error', e);
+  }
 });

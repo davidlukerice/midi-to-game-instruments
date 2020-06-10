@@ -17,27 +17,29 @@
     "build-electron:mac": "mkdir build/src && cp -r electron/. build/electron && cp -r src/shared/. build/src/shared",
     "package": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never",
     "package:with-mac": "electron-builder build --mac --win -c.extraMetadata.main=build/electron/main.js --publish never",
+    "rebuild-robotjs": "npm rebuild --runtime=electron --target=9.0.3 --disturl=https://atom.io/download/atom-shell --abi=83",
     "test": "react-scripts test"
   },
-  "dependencies": {
-    "@chakra-ui/core": "^0.8.0",
-    "@emotion/core": "^10.0.28",
-    "@emotion/styled": "^10.0.27",
+  "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "emotion-theming": "^10.0.27",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
-    "webmidi": "^2.5.1"
-  },
-  "devDependencies": {
     "electron": "^9.0.3",
     "electron-builder": "^22.7.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.9",
     "prettier": "^2.0.5"
+  },
+  "dependencies": {
+    "@chakra-ui/core": "^0.8.0",
+    "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27",
+    "emotion-theming": "^10.0.27",
+    "node-key-sender": "^1.0.11",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1",
+    "react": "^16.13.1",
+    "webmidi": "^2.5.1"
   },
   "build": {
     "files": [
