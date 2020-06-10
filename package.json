@@ -1,14 +1,23 @@
 {
   "name": "midi-to-keypress",
   "version": "0.1.0",
+  "private": true,
   "productName": "MIDI to Keypress",
   "main": "electron/main.js",
-  "private": true,
+  "homepage": "./",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run start:win",
+    "start:win": "set BROWSER=none && react-scripts start",
+    "start:mac": "export BROWSER=none && react-scripts start",
+    "start-electron": "npm run start-electron:win",
+    "start-electron:win": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build-electron": "npm run build-electron:win",
+    "build-electron:win": "mkdir build/src & robocopy electron build/electron /S & robocopy src/shared build/src/shared /S",
+    "build-electron:mac": "mkdir build/src && cp -r electron/. build/electron && cp -r src/shared/. build/src/shared",
+    "package": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never",
+    "package:with-mac": "electron-builder build --mac --win -c.extraMetadata.main=build/electron/main.js --publish never",
+    "test": "react-scripts test"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -16,13 +25,26 @@
     "@testing-library/user-event": "^7.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "webmidi": "^2.5.1"
   },
   "devDependencies": {
     "electron": "^9.0.3",
+    "electron-builder": "^22.7.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.9",
     "prettier": "^2.0.5"
+  },
+  "build": {
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "publish": {
+      "provider": "github",
+      "repo": "midi-to-keypress",
+      "owner": "davidlukerice"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
