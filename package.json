@@ -37,7 +37,6 @@
     "@emotion/styled": "^10.0.27",
     "electron-store": "^5.2.0",
     "emotion-theming": "^10.0.27",
-    "node-key-sender": "^1.0.11",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
