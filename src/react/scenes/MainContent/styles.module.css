@@ -1,0 +1,31 @@
+.appHeader {
+  width: 100%;
+  flex: 0;
+  border-bottom: 1px solid black;
+  padding: 1rem;
+}
+
+.appContent {
+  width: 100%;
+  flex: 1;
+  display: flex;
+}
+
+.leftContent {
+  padding: 1rem;
+  height: 100%;
+}
+
+.rightContent {
+  padding: 1rem;
+  margin-left: 1rem;
+  height: 100%;
+}
+
+.appFooter {
+  width: 100%;
+  flex: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+}

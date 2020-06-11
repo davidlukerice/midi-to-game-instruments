@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select } from '@chakra-ui/core';
 
-import { useMIDI } from '../hooks/useMIDI';
+import { useMIDI } from '../../hooks/useMIDI';
 
 export default MIDISelect;
 

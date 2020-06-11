@@ -3,9 +3,9 @@ import { ThemeProvider } from '@chakra-ui/core';
 
 import { ConfigContextProvider, useConfig } from './hooks/useConfig';
 import { MidiContextProvider, useMIDI } from './hooks/useMIDI';
-import MIDIDisplay from './components/MIDIDisplay';
-import MIDIKeySender from './components/MIDIKeySender';
-import MIDISelect from './components/MIDISelect';
+import { KeySenderProvider } from './hooks/useKeySender';
+
+import MainContent from './scenes/MainContent';
 
 import styles from './App.module.css';
 
@@ -21,32 +21,19 @@ function App() {
   } else if (midi.error) {
     content = <div>Error starting midi</div>;
   } else {
-    content = (
-      <>
-        <MIDISelect />
-        <MIDIDisplay />
-        <MIDIKeySender />
-      </>
-    );
+    content = <MainContent />;
   }
 
-  return (
-    <div className={styles.app}>
-      <header className="App-header">
-        <p>
-          {config.appName} v{config.appVersion}
-        </p>
-      </header>
-      <div>{content}</div>
-    </div>
-  );
+  return <div className={styles.app}>{content}</div>;
 }
 
 export default (props) => (
   <ThemeProvider>
     <ConfigContextProvider>
       <MidiContextProvider>
-        <App {...props} />
+        <KeySenderProvider>
+          <App {...props} />
+        </KeySenderProvider>
       </MidiContextProvider>
     </ConfigContextProvider>
   </ThemeProvider>

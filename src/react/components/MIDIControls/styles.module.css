@@ -1,0 +1,7 @@
+.controlContainer {
+  display: flex;
+}
+
+.controlContainer > * {
+  margin-left: 1rem;
+}
