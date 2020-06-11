@@ -45,8 +45,8 @@ const keyMap = {
     // D5: { key: '9' },
     // E5: { key: '0' },
   },
-  octaveUp: { key: '9' },
-  octaveDown: { key: '0' },
+  octaveDown: { key: '9' },
+  octaveUp: { key: '0' },
 };
 
 //
@@ -60,7 +60,7 @@ function KeySenderProvider(props) {
 
   const [state, setState] = useState({
     sentMessages: [],
-    // currentOctave: 1,
+    octave: 1,
   });
 
   const { selectedInput } = useMIDI();
@@ -83,11 +83,12 @@ function KeySenderProvider(props) {
       // TODO: Only when in auto octave mode
       let octaveShifts = 0;
       while (internalState.current.octave < noteOctave) {
-        console.log(
+        _addMessage(
           `shift up octave ${internalState.current.octave} towards ${noteOctave}`
         );
         const upKey = keyMap.octaveUp.key;
         // TODO: Can probably add a 'SEND_TAP_KEY' event?
+        // may fix trying to jump multiple octaves
         _sendKey(channels.SEND_KEY_ON, upKey, keyTime);
         _sendKey(channels.SEND_KEY_OFF, upKey, keyTime);
         internalState.current.octave += 1;
@@ -98,7 +99,7 @@ function KeySenderProvider(props) {
         }
       }
       while (internalState.current.octave > noteOctave) {
-        console.log(
+        _addMessage(
           `shift down octave ${internalState.current.octave} towards ${noteOctave}`
         );
         const downKey = keyMap.octaveDown.key;
@@ -112,7 +113,12 @@ function KeySenderProvider(props) {
         }
       }
 
-      _addMessage(`noteOn ${mapKey} -> '${note?.key}'`);
+      setState((curr) => ({
+        ...curr,
+        octave: internalState.current.octave,
+      }));
+
+      _addMessage(`noteOn ${mapKey} -> '${note?.key}' : ${note?.octave}`);
       _sendKey(channels.SEND_KEY_ON, note.key, keyTime);
     };
 
