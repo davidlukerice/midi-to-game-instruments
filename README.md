@@ -9,3 +9,6 @@ Primarily developing on windows 10, so support on other OSs is untested, though 
 ## building on windows
 
 Install required dependencies
+
+- `npm install --global windows-build-tools` (as admin)
+- `npm run rebuild-robotjs`
