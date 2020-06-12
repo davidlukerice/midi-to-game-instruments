@@ -2,6 +2,8 @@
   "name": "midi-to-keypress",
   "version": "0.1.0",
   "private": true,
+  "description": "App for converting midi to key presses. Built with Electron and React.",
+  "author": "davidlukerice",
   "productName": "MIDI to Keypress",
   "main": "electron/main.js",
   "homepage": "./",
@@ -28,8 +30,8 @@
     "electron-builder": "^22.7.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.9",
-    "prettier": "^2.0.5",
-    "robotjs": "git+https://github.com/octalmage/robotjs.git#master"
+    "mkdirp": "^1.0.4",
+    "prettier": "^2.0.5"
   },
   "dependencies": {
     "@chakra-ui/core": "^0.8.0",
@@ -40,7 +42,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
-    "webmidi": "^2.5.1"
+    "webmidi": "^2.5.1",
+    "robotjs": "git+https://github.com/octalmage/robotjs.git#master"
   },
   "build": {
     "files": [
