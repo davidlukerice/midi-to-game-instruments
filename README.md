@@ -21,6 +21,7 @@ If you feel this tool provides functionality against Guild Wars 2's policy, don'
 Install required dependencies
 
 - `npm i` to download the latest
+- Copy `.env-example` to `.env`
 
 Build RobotJS (https://github.com/octalmage/robotjs/issues/466#issuecomment-600197990)
 

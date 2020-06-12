@@ -1,10 +1,11 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 const url = require('url');
 const Store = require('electron-store');
 const robot = require('robotjs');
 
 const { channels } = require('../src/shared/constants');
+const { menuTemplate } = require('./menuTemplate');
 
 robot.setKeyboardDelay(0);
 
@@ -106,4 +107,7 @@ function createWindow() {
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
+
+  const menu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(menu);
 }
