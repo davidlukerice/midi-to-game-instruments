@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState, useRef } from 'react';
 import { channels } from '../../shared/constants';
 import { useMIDI } from '../hooks/useMIDI';
+import { useConfig } from '../hooks/useConfig';
 
 const { ipcRenderer } = window;
 
@@ -52,6 +53,7 @@ const MULTIPLE_OCTAVE_SHIFT_DELAY = 75;
 
 function KeySenderProvider(props) {
   const { children } = props;
+  const { isLoading: configIsLoading, config } = useConfig();
 
   const internalState = useRef({
     octave: 1,
@@ -65,7 +67,13 @@ function KeySenderProvider(props) {
   const { selectedInput } = useMIDI();
 
   useEffect(() => {
-    if (!selectedInput) {
+    if (configIsLoading) {
+      return;
+    }
+
+    const { sendNotes, autoSwapOctave } = config;
+
+    if (!selectedInput || !sendNotes) {
       return;
     }
 
@@ -90,7 +98,10 @@ function KeySenderProvider(props) {
         return;
       }
 
-      const { useAltOctaveKey } = _handleOctaveShift({ note });
+      const { useAltOctaveKey } = autoSwapOctave
+        ? _handleOctaveShift({ note })
+        : { shiftedOctaves: false, useAltOctaveKey: false };
+
       const keyToSend = useAltOctaveKey ? note.altOctaveKey : note.key;
 
       setState((curr) => ({
@@ -189,7 +200,7 @@ function KeySenderProvider(props) {
 
       return { shiftedOctaves: true, useAltOctaveKey: false };
     }
-  }, [selectedInput]);
+  }, [configIsLoading, selectedInput, config]);
 
   return (
     <keySenderContext.Provider value={state}>

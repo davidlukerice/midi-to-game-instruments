@@ -15,6 +15,14 @@ const store = new Store({
       type: 'string',
       default: '',
     },
+    sendNotes: {
+      type: 'boolean',
+      default: true,
+    },
+    autoSwapOctave: {
+      type: 'boolean',
+      default: true,
+    },
   },
 });
 let mainWindow;

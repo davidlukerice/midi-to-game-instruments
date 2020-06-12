@@ -1,10 +1,9 @@
 
-Current "roadmap" on upcoming changes
+Current "roadmap" of upcoming changes
 
 v0.1 release
 - checkbox to turn off sending notes (for practicing without it playing)
 - checkbox to turn off auto octave swap
-- update readme with disclaimer on use and some info on how it works
 
 v0.2 release
 - buttons for manually shifting the internal octave

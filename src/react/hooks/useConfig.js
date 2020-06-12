@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { set, cloneDeep } from 'lodash';
+
 import { channels } from '../../shared/constants';
 
 const { ipcRenderer } = window;
@@ -37,6 +39,14 @@ function ConfigContextProvider(props) {
   );
 
   function setValue(key, value) {
+    setState((curr) => {
+      const newConfig = set(cloneDeep(curr.config), key, value);
+      console.log('new config: ', newConfig);
+      return {
+        ...curr,
+        config: newConfig,
+      };
+    });
     ipcRenderer.send(channels.SET_CONFIG, key, value);
   }
 }
