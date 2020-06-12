@@ -49,6 +49,8 @@ const keyMap = {
   octaveUp: { key: '0' },
 };
 
+const MULTIPLE_OCTAVE_SHIFT_DELAY = 75;
+
 //
 
 function KeySenderProvider(props) {
@@ -80,17 +82,25 @@ function KeySenderProvider(props) {
       }
 
       const noteOctave = note.octave;
+      let delayAdded = false;
       // TODO: Only when in auto octave mode
       let octaveShifts = 0;
       while (internalState.current.octave < noteOctave) {
+        if (noteOctave - internalState.current.octave > 1) {
+          delayAdded = true;
+          ipcRenderer.send(channels.SEND_SET_KEY_DELAY, {
+            delay: MULTIPLE_OCTAVE_SHIFT_DELAY,
+          });
+        } else if (delayAdded) {
+          delayAdded = false;
+          ipcRenderer.send(channels.SEND_SET_KEY_DELAY, { delay: 0 });
+        }
         _addMessage(
           `shift up octave ${internalState.current.octave} towards ${noteOctave}`
         );
         const upKey = keyMap.octaveUp.key;
-        // TODO: Can probably add a 'SEND_TAP_KEY' event?
-        // may fix trying to jump multiple octaves
-        _sendKey(channels.SEND_KEY_ON, upKey, keyTime);
-        _sendKey(channels.SEND_KEY_OFF, upKey, keyTime);
+        // TODO: add delays to fix multiple octave jumps?
+        _sendKey(channels.SEND_KEY_TAP, upKey, keyTime);
         internalState.current.octave += 1;
 
         octaveShifts += 1;
@@ -99,12 +109,21 @@ function KeySenderProvider(props) {
         }
       }
       while (internalState.current.octave > noteOctave) {
+        if (internalState.current.octave - noteOctave > 1) {
+          ipcRenderer.send(channels.SEND_SET_KEY_DELAY, {
+            delay: MULTIPLE_OCTAVE_SHIFT_DELAY,
+          });
+          delayAdded = true;
+        } else if (delayAdded) {
+          delayAdded = false;
+          ipcRenderer.send(channels.SEND_SET_KEY_DELAY, { delay: 0 });
+        }
+
         _addMessage(
           `shift down octave ${internalState.current.octave} towards ${noteOctave}`
         );
         const downKey = keyMap.octaveDown.key;
-        _sendKey(channels.SEND_KEY_ON, downKey, keyTime);
-        _sendKey(channels.SEND_KEY_OFF, downKey, keyTime);
+        _sendKey(channels.SEND_KEY_TAP, downKey, keyTime);
         internalState.current.octave -= 1;
 
         octaveShifts += 1;
@@ -118,22 +137,26 @@ function KeySenderProvider(props) {
         octave: internalState.current.octave,
       }));
 
-      _addMessage(`noteOn ${mapKey} -> '${note?.key}' : ${note?.octave}`);
-      _sendKey(channels.SEND_KEY_ON, note.key, keyTime);
-    };
-
-    const noteOffHandler = (e) => {
-      const mapKey = `${e.note.name}${e.note.octave}`;
-      const note = keyMap.notes[mapKey];
-      const keyTime = Date.now();
-
-      if (!note?.key) {
-        return;
+      if (delayAdded) {
+        ipcRenderer.send(channels.SEND_SET_KEY_DELAY, { delay: 0 });
       }
-
-      // _addMessage(`noteOff ${mapKey} -> '${note?.key}'`);
-      _sendKey(channels.SEND_KEY_OFF, note.key, keyTime);
+      _addMessage(`noteOn ${mapKey} -> '${note?.key}' : ${note?.octave}`);
+      _sendKey(channels.SEND_KEY_TAP, note.key, keyTime);
+      // _sendKey(channels.SEND_KEY_ON, note.key, keyTime);
     };
+
+    // const noteOffHandler = (e) => {
+    //   const mapKey = `${e.note.name}${e.note.octave}`;
+    //   const note = keyMap.notes[mapKey];
+    //   const keyTime = Date.now();
+
+    //   if (!note?.key) {
+    //     return;
+    //   }
+
+    //   // _addMessage(`noteOff ${mapKey} -> '${note?.key}'`);
+    //   _sendKey(channels.SEND_KEY_OFF, note.key, keyTime);
+    // };
 
     function _sendKey(event, key, time) {
       ipcRenderer.send(event, {
@@ -142,15 +165,16 @@ function KeySenderProvider(props) {
       });
     }
 
+    // TODO: Allow toggle between note on/off and tap?
     selectedInput.addListener('noteon', 'all', noteOnHandler);
-    selectedInput.addListener('noteoff', 'all', noteOffHandler);
+    //selectedInput.addListener('noteoff', 'all', noteOffHandler);
 
     return () => {
       if (!selectedInput) {
         return;
       }
       selectedInput.removeListener('noteon', 'all', noteOnHandler);
-      selectedInput.removeListener('noteoff', 'all', noteOffHandler);
+      //selectedInput.removeListener('noteoff', 'all', noteOffHandler);
     };
   }, [selectedInput]);
 
@@ -162,6 +186,7 @@ function KeySenderProvider(props) {
 
   function _addMessage(message) {
     setState((curr) => ({
+      ...curr,
       sentMessages: [message, ...curr.sentMessages].slice(0, 10),
     }));
   }

@@ -10,5 +10,7 @@ Primarily developing on windows 10, so support on other OSs is untested, though 
 
 Install required dependencies
 
+(building robot-js from https://stackoverflow.com/a/46897783/833733)
+
 - `npm install --global windows-build-tools` (as admin)
 - `npm run rebuild-robotjs`

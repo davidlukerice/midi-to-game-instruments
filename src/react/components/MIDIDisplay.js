@@ -5,7 +5,6 @@ export default MIDIDisplay;
 
 function MIDIDisplay(props) {
   const { sentMessages, octave } = useKeySender();
-
   return (
     <div>
       <h3>Messages</h3>
