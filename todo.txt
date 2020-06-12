@@ -1,6 +1,7 @@
 
-- Auto change octaves when playing a note on a different octave?
--- ie, gw2 instruments have a set octave you need to change through
+- checkbox to turn off sending notes (for practicing without it playing)
+- checkbox to turn off auto octave swap
+- buttons for manually shifting the internal octave
 - keymap selector
 - UI that shows a piano and keypresses
 - Better ui for configuring note->key map

@@ -18,20 +18,16 @@ const keyMap = {
     G3: { key: '5', octave: 0 },
     A3: { key: '6', octave: 0 },
     B3: { key: '7', octave: 0 },
-    // TODO: how to handle overlaps?
-    // C4: { key: '8', octave: 0 },
 
-    C4: { key: '1', octave: 1 },
+    C4: { key: '1', octave: 1, altOctave: 0, altOctaveKey: '8' },
     D4: { key: '2', octave: 1 },
     E4: { key: '3', octave: 1 },
     F4: { key: '4', octave: 1 },
     G4: { key: '5', octave: 1 },
     A4: { key: '6', octave: 1 },
     B4: { key: '7', octave: 1 },
-    C5: { key: '8', octave: 1 },
+    C5: { key: '8', octave: 1, altOctave: 2, altOctaveKey: '1' },
 
-    // TODO: how to handle overlaps?
-    // C5: { key: '1', octave: 2 },
     D5: { key: '2', octave: 2 },
     E5: { key: '3', octave: 2 },
     F5: { key: '4', octave: 2 },
@@ -49,9 +45,10 @@ const keyMap = {
   octaveUp: { key: '0' },
 };
 
+// If this is too low, the game may not recognize multiple octave shifts
+// If too high, it adds unnecessary delay
+// TODO: Move to config since the sweet spot may be different per game/person?
 const MULTIPLE_OCTAVE_SHIFT_DELAY = 75;
-
-//
 
 function KeySenderProvider(props) {
   const { children } = props;
@@ -72,7 +69,19 @@ function KeySenderProvider(props) {
       return;
     }
 
-    const noteOnHandler = (e) => {
+    // TODO: Allow toggle between note on/off and tap?
+    selectedInput.addListener('noteon', 'all', _noteOnHandler);
+    //selectedInput.addListener('noteoff', 'all', noteOffHandler);
+
+    return () => {
+      if (!selectedInput) {
+        return;
+      }
+      selectedInput.removeListener('noteon', 'all', _noteOnHandler);
+      //selectedInput.removeListener('noteoff', 'all', noteOffHandler);
+    };
+
+    function _noteOnHandler(e) {
       const mapKey = `${e.note.name}${e.note.octave}`;
       const note = keyMap.notes[mapKey];
       const keyTime = Date.now();
@@ -81,9 +90,51 @@ function KeySenderProvider(props) {
         return;
       }
 
+      const { useAltOctaveKey } = _handleOctaveShift({ note });
+      const keyToSend = useAltOctaveKey ? note.altOctaveKey : note.key;
+
+      setState((curr) => ({
+        ...curr,
+        octave: internalState.current.octave,
+      }));
+
+      _addMessage(`noteOn ${mapKey} -> '${keyToSend}' : ${note?.octave}`);
+      _sendKey(channels.SEND_KEY_TAP, keyToSend, keyTime);
+      // _sendKey(channels.SEND_KEY_ON, note.key, keyTime);
+    }
+
+    // function _noteOffHandler (e) {
+    //   const mapKey = `${e.note.name}${e.note.octave}`;
+    //   const note = keyMap.notes[mapKey];
+    //   const keyTime = Date.now();
+
+    //   if (!note?.key) {
+    //     return;
+    //   }
+
+    //   // _addMessage(`noteOff ${mapKey} -> '${note?.key}'`);
+    //   _sendKey(channels.SEND_KEY_OFF, note.key, keyTime);
+    // };
+
+    function _handleOctaveShift({ note }) {
       const noteOctave = note.octave;
-      let delayAdded = false;
+
       // TODO: Only when in auto octave mode
+
+      if (noteOctave === internalState.current.octave) {
+        return { shiftedOctaves: false, useAltOctaveKey: false };
+      }
+      if (
+        note.hasOwnProperty('altOctave') &&
+        note.altOctave === internalState.current.octave
+      ) {
+        return { shiftedOctaves: false, useAltOctaveKey: true };
+      }
+
+      let delayAdded = false;
+
+      // TODO: May be able to shift less octaves if using an alt octave key?
+
       let octaveShifts = 0;
       while (internalState.current.octave < noteOctave) {
         if (noteOctave - internalState.current.octave > 1) {
@@ -100,7 +151,7 @@ function KeySenderProvider(props) {
         );
         const upKey = keyMap.octaveUp.key;
         // TODO: add delays to fix multiple octave jumps?
-        _sendKey(channels.SEND_KEY_TAP, upKey, keyTime);
+        _sendKey(channels.SEND_KEY_TAP, upKey);
         internalState.current.octave += 1;
 
         octaveShifts += 1;
@@ -123,7 +174,7 @@ function KeySenderProvider(props) {
           `shift down octave ${internalState.current.octave} towards ${noteOctave}`
         );
         const downKey = keyMap.octaveDown.key;
-        _sendKey(channels.SEND_KEY_TAP, downKey, keyTime);
+        _sendKey(channels.SEND_KEY_TAP, downKey);
         internalState.current.octave -= 1;
 
         octaveShifts += 1;
@@ -132,50 +183,12 @@ function KeySenderProvider(props) {
         }
       }
 
-      setState((curr) => ({
-        ...curr,
-        octave: internalState.current.octave,
-      }));
-
       if (delayAdded) {
         ipcRenderer.send(channels.SEND_SET_KEY_DELAY, { delay: 0 });
       }
-      _addMessage(`noteOn ${mapKey} -> '${note?.key}' : ${note?.octave}`);
-      _sendKey(channels.SEND_KEY_TAP, note.key, keyTime);
-      // _sendKey(channels.SEND_KEY_ON, note.key, keyTime);
-    };
 
-    // const noteOffHandler = (e) => {
-    //   const mapKey = `${e.note.name}${e.note.octave}`;
-    //   const note = keyMap.notes[mapKey];
-    //   const keyTime = Date.now();
-
-    //   if (!note?.key) {
-    //     return;
-    //   }
-
-    //   // _addMessage(`noteOff ${mapKey} -> '${note?.key}'`);
-    //   _sendKey(channels.SEND_KEY_OFF, note.key, keyTime);
-    // };
-
-    function _sendKey(event, key, time) {
-      ipcRenderer.send(event, {
-        key: key,
-        eventTime: time,
-      });
+      return { shiftedOctaves: true, useAltOctaveKey: false };
     }
-
-    // TODO: Allow toggle between note on/off and tap?
-    selectedInput.addListener('noteon', 'all', noteOnHandler);
-    //selectedInput.addListener('noteoff', 'all', noteOffHandler);
-
-    return () => {
-      if (!selectedInput) {
-        return;
-      }
-      selectedInput.removeListener('noteon', 'all', noteOnHandler);
-      //selectedInput.removeListener('noteoff', 'all', noteOffHandler);
-    };
   }, [selectedInput]);
 
   return (
@@ -189,6 +202,13 @@ function KeySenderProvider(props) {
       ...curr,
       sentMessages: [message, ...curr.sentMessages].slice(0, 10),
     }));
+  }
+
+  function _sendKey(event, key, time) {
+    ipcRenderer.send(event, {
+      key: key,
+      eventTime: time,
+    });
   }
 }
 
