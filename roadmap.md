@@ -2,9 +2,9 @@ Current "roadmap" of upcoming changes
 
 v0.2
 
-- key switches for octaves (when in not auto octave mode)
-- buttons for manually shifting the internal octave
 - keymap selector with a few options
+- key switches for internal octaves
+- buttons for manually shifting the internal octave
 
 v0.3
 

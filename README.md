@@ -18,10 +18,15 @@ If you feel this tool provides functionality against Guild Wars 2's policy, don'
 
 ## Keymap example
 
+See `/electron/defaultKeyMaps` for current default keymaps.
+
 ```
 {
   name: 'GW2 - The Minstrel (Auto Octave)',
+
+  // (Not yet implemented. Flag stored on the top level config used)
   autoOctaveSwap: true,
+
   // 'note' is the piano note
   notes: {
     // 'key' is the computer keyboard key

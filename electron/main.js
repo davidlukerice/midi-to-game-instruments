@@ -5,7 +5,8 @@ const Store = require('electron-store');
 const robot = require('robotjs');
 
 const { channels } = require('../src/shared/constants');
-const { menuTemplate } = require('./menuTemplate');
+const { generateMenuTemplate } = require('./menuTemplate');
+const { keyMaps } = require('./defaultKeyMaps');
 
 robot.setKeyboardDelay(0);
 
@@ -15,6 +16,10 @@ const store = new Store({
       type: 'string',
       default: '',
     },
+    selectedKeyMap: {
+      type: 'number',
+      default: 0,
+    },
     sendNotes: {
       type: 'boolean',
       default: true,
@@ -22,6 +27,10 @@ const store = new Store({
     autoSwapOctave: {
       type: 'boolean',
       default: true,
+    },
+    keyMaps: {
+      type: 'array',
+      default: keyMaps,
     },
   },
 });
@@ -116,6 +125,7 @@ function createWindow() {
     mainWindow = null;
   });
 
+  const menuTemplate = generateMenuTemplate({ store });
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
 }

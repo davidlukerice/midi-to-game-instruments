@@ -9,43 +9,6 @@ const keySenderContext = React.createContext();
 
 export { KeySenderProvider, useKeySender };
 
-// gw2 harp keymap
-const keyMap = {
-  notes: {
-    C3: { key: '1', octave: 0 },
-    D3: { key: '2', octave: 0 },
-    E3: { key: '3', octave: 0 },
-    F3: { key: '4', octave: 0 },
-    G3: { key: '5', octave: 0 },
-    A3: { key: '6', octave: 0 },
-    B3: { key: '7', octave: 0 },
-
-    C4: { key: '1', octave: 1, altOctave: 0, altOctaveKey: '8' },
-    D4: { key: '2', octave: 1 },
-    E4: { key: '3', octave: 1 },
-    F4: { key: '4', octave: 1 },
-    G4: { key: '5', octave: 1 },
-    A4: { key: '6', octave: 1 },
-    B4: { key: '7', octave: 1 },
-    C5: { key: '8', octave: 1, altOctave: 2, altOctaveKey: '1' },
-
-    D5: { key: '2', octave: 2 },
-    E5: { key: '3', octave: 2 },
-    F5: { key: '4', octave: 2 },
-    G5: { key: '5', octave: 2 },
-    A5: { key: '6', octave: 2 },
-    B5: { key: '7', octave: 2 },
-    C6: { key: '8', octave: 2 },
-
-    // TODO: How to handle allowing octave key switch
-    // when not in auto octave mode
-    // D5: { key: '9' },
-    // E5: { key: '0' },
-  },
-  octaveDown: { key: '9' },
-  octaveUp: { key: '0' },
-};
-
 // If this is too low, the game may not recognize multiple octave shifts
 // If too high, it adds unnecessary delay
 // TODO: Move to config since the sweet spot may be different per game/person?
@@ -73,11 +36,13 @@ function KeySenderProvider(props) {
       return;
     }
 
-    const { sendNotes, autoSwapOctave } = config;
+    const { sendNotes, autoSwapOctave, keyMaps } = config;
 
     if (!selectedInput || !sendNotes) {
       return;
     }
+
+    const keyMap = keyMaps[0];
 
     // TODO: Allow toggle between note on/off and tap?
     selectedInput.addListener('noteon', 'all', _noteOnHandler);
