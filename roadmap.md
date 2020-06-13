@@ -2,13 +2,16 @@ Current "roadmap" of upcoming changes
 
 v0.2
 
-- keymap selector with a few options
+- fix unchecked checkbox styling
+- add more keymap selector options
 - key switches for internal octaves
 - buttons for manually shifting the internal octave
 
 v0.3
 
-- Better ui for configuring note->key map
+- Better ui for configuring a keyMap
+- Expose MULTIPLE_OCTAVE_SHIFT_DELAY config UI?
+- Move 'auto swap octave' flag into a keymap
 
 future ideas
 

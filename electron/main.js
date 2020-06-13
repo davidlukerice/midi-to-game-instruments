@@ -28,6 +28,10 @@ const store = new Store({
       type: 'boolean',
       default: true,
     },
+    multipleOctaveShiftDelay: {
+      type: 'number',
+      default: 75,
+    },
     keyMaps: {
       type: 'array',
       default: keyMaps,

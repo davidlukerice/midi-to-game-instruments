@@ -9,11 +9,6 @@ const keySenderContext = React.createContext();
 
 export { KeySenderProvider, useKeySender };
 
-// If this is too low, the game may not recognize multiple octave shifts
-// If too high, it adds unnecessary delay
-// TODO: Move to config since the sweet spot may be different per game/person?
-const MULTIPLE_OCTAVE_SHIFT_DELAY = 75;
-
 const MESSAGE_LIMIT = 100;
 
 function KeySenderProvider(props) {
@@ -36,13 +31,19 @@ function KeySenderProvider(props) {
       return;
     }
 
-    const { sendNotes, autoSwapOctave, keyMaps } = config;
+    const {
+      sendNotes,
+      autoSwapOctave,
+      keyMaps,
+      selectedKeyMap,
+      multipleOctaveShiftDelay,
+    } = config;
 
     if (!selectedInput || !sendNotes) {
       return;
     }
 
-    const keyMap = keyMaps[0];
+    const keyMap = keyMaps[selectedKeyMap];
 
     // TODO: Allow toggle between note on/off and tap?
     selectedInput.addListener('noteon', 'all', _noteOnHandler);
@@ -126,7 +127,7 @@ function KeySenderProvider(props) {
         if (noteOctave - internalState.current.octave > 1) {
           delayAdded = true;
           ipcRenderer.send(channels.SEND_SET_KEY_DELAY, {
-            delay: MULTIPLE_OCTAVE_SHIFT_DELAY,
+            delay: multipleOctaveShiftDelay,
           });
         } else if (delayAdded) {
           delayAdded = false;
@@ -148,7 +149,7 @@ function KeySenderProvider(props) {
       while (internalState.current.octave > noteOctave) {
         if (internalState.current.octave - noteOctave > 1) {
           ipcRenderer.send(channels.SEND_SET_KEY_DELAY, {
-            delay: MULTIPLE_OCTAVE_SHIFT_DELAY,
+            delay: multipleOctaveShiftDelay,
           });
           delayAdded = true;
         } else if (delayAdded) {
