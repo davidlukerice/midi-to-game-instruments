@@ -51,6 +51,8 @@ const keyMap = {
 // TODO: Move to config since the sweet spot may be different per game/person?
 const MULTIPLE_OCTAVE_SHIFT_DELAY = 75;
 
+const MESSAGE_LIMIT = 100;
+
 function KeySenderProvider(props) {
   const { children } = props;
   const { isLoading: configIsLoading, config } = useConfig();
@@ -211,7 +213,10 @@ function KeySenderProvider(props) {
   function _addMessage(message) {
     setState((curr) => ({
       ...curr,
-      sentMessages: [message, ...curr.sentMessages].slice(0, 10),
+      sentMessages: [...curr.sentMessages, message].slice(
+        curr.sentMessages.length - MESSAGE_LIMIT,
+        MESSAGE_LIMIT
+      ),
     }));
   }
 

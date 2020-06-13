@@ -1,19 +1,20 @@
-
 Current "roadmap" of upcoming changes
 
-v0.1 release
-- checkbox to turn off sending notes (for practicing without it playing)
-- checkbox to turn off auto octave swap
+v0.2
 
-v0.2 release
+- key switches for octaves (when in not auto octave mode)
 - buttons for manually shifting the internal octave
-- keymap selector
+- keymap selector with a few options
+
+v0.3
+
 - Better ui for configuring note->key map
 
 future ideas
+
 - UI that shows a piano and keypresses
 - Automatically play through a song
 - Mac build
 - Send different note ranges to different game clients?
--- Like if multiboxing multiple instruments
--- May be against terms of service :(
+  -- Like if multiboxing multiple instruments
+  -- May be against terms of service :(

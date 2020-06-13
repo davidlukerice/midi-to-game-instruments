@@ -1,8 +1,11 @@
 import React from 'react';
 
-import MIDIDisplay from '../../components/MIDIDisplay';
-import MIDIControls from '../../components/MIDIControls';
 import { useConfig } from '../../hooks/useConfig';
+
+import MIDIControls from '../../components/MIDIControls';
+import InstrumentSelector from '../../components/InstrumentSelector';
+import PianoDisplay from '../../components/PianoDisplay';
+import MIDIMessageDisplay from '../../components/MIDIMessageDisplay';
 
 import styles from './styles.module.css';
 
@@ -18,10 +21,15 @@ function MainContent() {
       </header>
       <div className={styles.appContent}>
         <div className={styles.leftContent}>
-          Input used for testing key press <input />
+          <InstrumentSelector />
+          <PianoDisplay />
+          <div>
+            Input used for testing key press <input />
+          </div>
         </div>
+
         <div className={styles.rightContent}>
-          <MIDIDisplay />
+          <MIDIMessageDisplay />
         </div>
       </div>
       <footer className={styles.appFooter}>
