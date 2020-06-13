@@ -97,6 +97,7 @@ function KeySenderProvider(props) {
       const keyTime = Date.now();
 
       if (!note?.key) {
+        _addMessage(`noteOn ${mapKey} -> 'None'`);
         return;
       }
 
@@ -129,10 +130,17 @@ function KeySenderProvider(props) {
     //   _sendKey(channels.SEND_KEY_OFF, note.key, keyTime);
     // };
 
+    /**
+     * Transitions from the current octave to the one on the next played note
+     * @param options.note
+     * @return { shiftedOctaves, useAltOctaveKey }
+     */
     function _handleOctaveShift({ note }) {
-      const noteOctave = note.octave;
+      if (!note.hasOwnProperty('octave')) {
+        return { shiftedOctaves: false, useAltOctaveKey: false };
+      }
 
-      // TODO: Only when in auto octave mode
+      const noteOctave = note.octave;
 
       if (noteOctave === internalState.current.octave) {
         return { shiftedOctaves: false, useAltOctaveKey: false };
