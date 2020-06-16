@@ -138,5 +138,5 @@ Start up the related dev servers in different terminal windows
 ## Building and Packaging on Windows
 
 - `npm run build`
-- `npm run electron-build`
+- `npm run build-electron`
 - `npm run package`
