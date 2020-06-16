@@ -2,9 +2,13 @@ Current "roadmap" of upcoming changes
 
 v0.3
 
-- key switches for internal octaves
-- Expose MULTIPLE_OCTAVE_SHIFT_DELAY config UI
-- buttons for manually shifting the internal octave
+- add gw2 bass guitar map
+- add gw2 lute map
+- add custom app icon and github project logo
+
+* key switches for internal octaves
+* Expose MULTIPLE_OCTAVE_SHIFT_DELAY config UI
+* buttons for manually shifting the internal octave
 
 v.04
 

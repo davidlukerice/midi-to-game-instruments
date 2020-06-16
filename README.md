@@ -1,5 +1,7 @@
 # midi-to-keypress
 
+![App screenshot](meda/screenshot.png?raw=true)
+
 This application converts midi messages to keyboard key presses.
 
 I've primarily made this to be able to play GuildWars2 Instruments with a midi keyboard. It also provides some additional tools, like automatically shifting octaves in game, to help make playing smoother and more fun (at least in my opinion).
