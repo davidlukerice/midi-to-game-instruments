@@ -147,9 +147,9 @@ const keyMaps = [
       E6: { key: '8', octave: 2 },
 
       // Swap octave
-      F: { key: '9' },
+      F4: { key: '9' },
       // Stop playing
-      G: { key: '0' },
+      G4: { key: '0' },
     },
     octaveDown: { key: '9' },
     octaveUp: { key: '9' },
