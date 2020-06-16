@@ -1,6 +1,5 @@
 # midi-to-keypress
-
-![App screenshot](meda/screenshot.png?raw=true | width=550)
+<img alt="App Screenshot" src="meda/screenshot.png?raw=true" width="550px">
 
 This application converts midi messages to keyboard key presses.
 
