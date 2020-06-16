@@ -44,6 +44,11 @@ A delay gets added when auto shifting more than one octave. If this is too low, 
 ### keyMaps
 
 Instrument keymaps. Feel free to add your own in the config to use in the app.
+Named with the following convention:
+
+```
+game - instrumentName (key and any transposes) (if designed for use with auto octave)
+```
 
 ## Keymap example
 
