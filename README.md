@@ -25,7 +25,7 @@ Most values in the app are exposed via a .json config. Use `File -> Open Config`
 
 The name of the selected MIDI input.
 
-### selectedKeyMap
+### selectedKeyMapIndex
 
 The index of the selected key map in the keyMaps array.
 

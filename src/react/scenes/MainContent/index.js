@@ -5,6 +5,7 @@ import { useConfig } from '../../hooks/useConfig';
 import MIDIControls from '../../components/MIDIControls';
 import InstrumentSelector from '../../components/InstrumentSelector';
 import PianoDisplay from '../../components/PianoDisplay';
+import KeyMapDisplay from '../../components/KeyMapDisplay';
 import MIDIMessageDisplay from '../../components/MIDIMessageDisplay';
 
 import styles from './styles.module.css';
@@ -23,6 +24,7 @@ function MainContent() {
         <div className={styles.leftContent}>
           <InstrumentSelector />
           <PianoDisplay />
+          <KeyMapDisplay />
           <div>
             Input used for testing key press <input />
           </div>

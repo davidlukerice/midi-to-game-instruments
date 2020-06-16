@@ -35,7 +35,7 @@ function KeySenderProvider(props) {
       sendNotes,
       autoSwapOctave,
       keyMaps,
-      selectedKeyMap,
+      selectedKeyMapIndex,
       multipleOctaveShiftDelay,
     } = config;
 
@@ -43,7 +43,7 @@ function KeySenderProvider(props) {
       return;
     }
 
-    const keyMap = keyMaps[selectedKeyMap];
+    const keyMap = keyMaps[selectedKeyMapIndex];
 
     // TODO: Allow toggle between note on/off and tap?
     selectedInput.addListener('noteon', 'all', _noteOnHandler);

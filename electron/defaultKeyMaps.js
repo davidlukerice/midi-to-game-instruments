@@ -51,6 +51,27 @@ const keyMaps = [
     octaveDown: { key: '9' },
     octaveUp: { key: '0' },
   },
+  {
+    name: 'GW2 - The Minstrel',
+    autoOctaveSwap: false,
+    notes: {
+      C4: { key: '1', octave: 1 },
+      D4: { key: '2', octave: 1 },
+      E4: { key: '3', octave: 1 },
+      F4: { key: '4', octave: 1 },
+      G4: { key: '5', octave: 1 },
+      A4: { key: '6', octave: 1 },
+      B4: { key: '7', octave: 1 },
+      C5: { key: '8', octave: 1 },
+
+      // Since The Minstrel plays in the key of C, we can use
+      // sharp notes for "key switches". In the case below, they
+      // allow manual actave shifts in the case that GW2 lags and doesn't
+      // switch correctly
+      'C#4': { key: '9' },
+      'D#4': { key: '0' },
+    },
+  },
 ];
 
 module.exports = { keyMaps };

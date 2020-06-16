@@ -28,7 +28,7 @@ function generateMenuTemplate({ store }) {
       label: 'File',
       submenu: [
         {
-          label: 'open config',
+          label: 'edit config',
           click: () => {
             store.openInEditor();
           },
@@ -37,6 +37,12 @@ function generateMenuTemplate({ store }) {
           label: 'open config folder',
           click: () => {
             shell.showItemInFolder(store.path);
+          },
+        },
+        {
+          label: 'clear config (requires restart)',
+          click: () => {
+            store.clear();
           },
         },
         { role: isMac ? 'close' : 'quit' },

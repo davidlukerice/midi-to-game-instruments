@@ -16,7 +16,7 @@ const store = new Store({
       type: 'string',
       default: '',
     },
-    selectedKeyMap: {
+    selectedKeyMapIndex: {
       type: 'number',
       default: 0,
     },

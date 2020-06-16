@@ -41,7 +41,6 @@ function ConfigContextProvider(props) {
   function setValue(key, value) {
     setState((curr) => {
       const newConfig = set(cloneDeep(curr.config), key, value);
-      console.log('new config: ', newConfig);
       return {
         ...curr,
         config: newConfig,
