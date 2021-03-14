@@ -1,4 +1,4 @@
-# midi-to-keypress
+# midi-to-game-instruments
 <img alt="App Screenshot" src="meda/screenshot.png?raw=true" width="550px">
 
 This application converts midi messages to keyboard key presses.
