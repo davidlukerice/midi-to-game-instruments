@@ -43,7 +43,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-json-view": "^1.19.1",
-    "react-scripts": "3.4.1",
+    "react-scripts": "5.0.1",
     "robotjs": "git+https://github.com/octalmage/robotjs.git#master",
     "smooth-scroll-into-view-if-needed": "^1.1.28",
     "webmidi": "^2.5.1"
