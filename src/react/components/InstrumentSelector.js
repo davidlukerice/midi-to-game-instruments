@@ -1,7 +1,6 @@
-import React from 'react';
 import { useConfig } from '../hooks/useConfig';
 
-import { Select } from '@chakra-ui/core';
+import { Select } from "@chakra-ui/react"
 
 export default InstrumentSelector;
 

@@ -1,12 +1,14 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron');
-const path = require('path');
-const url = require('url');
-const Store = require('electron-store');
-const robot = require('robotjs');
+import { app, BrowserWindow, Menu, ipcMain } from 'electron';
+import path from 'path';
+import url from 'url';
+import Store from 'electron-store';
+import robot from '@hurdlegroup/robotjs';
 
-const { channels } = require('../src/shared/constants');
-const { generateMenuTemplate } = require('./menuTemplate');
-const { keyMaps } = require('./defaultKeyMaps');
+import constants from '../src/shared/constants.js';
+import { generateMenuTemplate } from './menuTemplate.js';
+import { keyMaps } from './defaultKeyMaps.js';
+
+const { channels } = constants
 
 robot.setKeyboardDelay(0);
 

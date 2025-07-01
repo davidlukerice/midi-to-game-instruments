@@ -3,7 +3,7 @@ import { set, cloneDeep } from 'lodash';
 
 import { channels } from '../../shared/constants';
 
-const { ipcRenderer } = window;
+const { myApi } = window;
 
 const configContext = React.createContext();
 
@@ -22,7 +22,7 @@ function ConfigContextProvider(props) {
 
   useEffect(() => {
     (async () => {
-      const response = await ipcRenderer.invoke(channels.GET_CONFIG);
+      const response = await myApi.invoke(channels.GET_CONFIG);
 
       setState((curr) => ({
         ...curr,
@@ -46,7 +46,7 @@ function ConfigContextProvider(props) {
         config: newConfig,
       };
     });
-    ipcRenderer.send(channels.SET_CONFIG, key, value);
+    myApi.send(channels.SET_CONFIG, key, value);
   }
 }
 

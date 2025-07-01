@@ -1,5 +1,4 @@
-import React from 'react';
-import ReactJsonView from 'react-json-view';
+import ReactJsonView from '@microlink/react-json-view';
 
 import { useConfig } from '../hooks/useConfig';
 

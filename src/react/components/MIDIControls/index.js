@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox } from '@chakra-ui/core';
+import { Checkbox } from '@chakra-ui/react';
 
 import { useConfig } from '../../hooks/useConfig.js';
 

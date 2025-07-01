@@ -3,7 +3,7 @@ import { channels } from '../../shared/constants';
 import { useMIDI } from '../hooks/useMIDI';
 import { useConfig } from '../hooks/useConfig';
 
-const { ipcRenderer } = window;
+const { myApi } = window;
 
 const keySenderContext = React.createContext();
 
@@ -126,12 +126,12 @@ function KeySenderProvider(props) {
       while (internalState.current.octave < noteOctave) {
         if (noteOctave - internalState.current.octave > 1) {
           delayAdded = true;
-          ipcRenderer.send(channels.SEND_SET_KEY_DELAY, {
+          myApi.send(channels.SEND_SET_KEY_DELAY, {
             delay: multipleOctaveShiftDelay,
           });
         } else if (delayAdded) {
           delayAdded = false;
-          ipcRenderer.send(channels.SEND_SET_KEY_DELAY, { delay: 0 });
+          myApi.send(channels.SEND_SET_KEY_DELAY, { delay: 0 });
         }
         _addMessage(
           `shift up octave ${internalState.current.octave} towards ${noteOctave}`
@@ -148,13 +148,13 @@ function KeySenderProvider(props) {
       }
       while (internalState.current.octave > noteOctave) {
         if (internalState.current.octave - noteOctave > 1) {
-          ipcRenderer.send(channels.SEND_SET_KEY_DELAY, {
+          myApi.send(channels.SEND_SET_KEY_DELAY, {
             delay: multipleOctaveShiftDelay,
           });
           delayAdded = true;
         } else if (delayAdded) {
           delayAdded = false;
-          ipcRenderer.send(channels.SEND_SET_KEY_DELAY, { delay: 0 });
+          myApi.send(channels.SEND_SET_KEY_DELAY, { delay: 0 });
         }
 
         _addMessage(
@@ -171,7 +171,7 @@ function KeySenderProvider(props) {
       }
 
       if (delayAdded) {
-        ipcRenderer.send(channels.SEND_SET_KEY_DELAY, { delay: 0 });
+        myApi.send(channels.SEND_SET_KEY_DELAY, { delay: 0 });
       }
 
       return { shiftedOctaves: true, useAltOctaveKey: false };
@@ -195,7 +195,7 @@ function KeySenderProvider(props) {
   }
 
   function _sendKey(event, key, time) {
-    ipcRenderer.send(event, {
+    myApi.send(event, {
       key: key,
       eventTime: time,
     });

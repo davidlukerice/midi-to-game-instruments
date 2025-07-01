@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider } from '@chakra-ui/core';
+import { Provider } from "./components/ui/provider"
 
 import { ConfigContextProvider, useConfig } from './hooks/useConfig';
 import { MidiContextProvider, useMIDI } from './hooks/useMIDI';
@@ -28,7 +28,7 @@ function App() {
 }
 
 export default (props) => (
-  <ThemeProvider>
+  <Provider>
     <ConfigContextProvider>
       <MidiContextProvider>
         <KeySenderProvider>
@@ -36,5 +36,5 @@ export default (props) => (
         </KeySenderProvider>
       </MidiContextProvider>
     </ConfigContextProvider>
-  </ThemeProvider>
+  </Provider>
 );

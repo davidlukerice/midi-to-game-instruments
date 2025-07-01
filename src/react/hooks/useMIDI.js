@@ -1,4 +1,4 @@
-import WebMidi from 'webmidi';
+import { WebMidi } from 'webmidi';
 import React, { useEffect, useState, useContext } from 'react';
 import { useConfig } from './useConfig';
 

@@ -1,6 +1,6 @@
 {
   "name": "midi-to-keypress",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "App for converting midi to key presses. Built with Electron and React.",
   "author": "davidlukerice",
@@ -23,32 +23,34 @@
     "test": "react-scripts test"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "electron": "^9.3.1",
-    "electron-builder": "^22.7.0",
-    "husky": "^4.2.5",
-    "lint-staged": "^10.2.9",
-    "mkdirp": "^1.0.4",
-    "prettier": "^2.0.5"
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "electron": "^37.1.0",
+    "electron-builder": "^26.0.12",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "mkdirp": "^3.0.1",
+    "prettier": "^3.6.2",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@chakra-ui/core": "^0.8.0",
-    "@emotion/core": "^10.0.28",
-    "@emotion/styled": "^10.0.27",
-    "electron-store": "^5.2.0",
-    "emotion-theming": "^10.0.27",
-    "lodash": "^4.17.19",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-json-view": "^1.19.1",
-    "react-scripts": "3.4.1",
-    "robotjs": "git+https://github.com/octalmage/robotjs.git#master",
-    "smooth-scroll-into-view-if-needed": "^1.1.28",
-    "webmidi": "^2.5.1"
+    "@chakra-ui/react": "^3.21.1",
+    "@emotion/react": "^11.14.0",
+    "@hurdlegroup/robotjs": "^0.12.3",
+    "@microlink/react-json-view": "^1.26.2",
+    "electron-store": "^10.1.0",
+    "lodash": "^4.17.21",
+    "next-themes": "^0.4.6",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
+    "react-scripts": "5.0.1",
+    "smooth-scroll-into-view-if-needed": "^2.0.2",
+    "webmidi": "^3.1.12"
   },
   "build": {
+    "appId": "com.davidlukerice.midi-to-game-instruments",
     "files": [
       "build/**/*",
       "node_modules/**/*"

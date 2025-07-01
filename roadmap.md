@@ -1,6 +1,10 @@
 Current "roadmap" of upcoming changes
 
 v0.3
+- update dependenies to build a 'modern' electron app
+- include gw2 grand piano map
+
+v0.4
 
 - add gw2 bass guitar map
 - add gw2 lute map
@@ -10,7 +14,7 @@ v0.3
 * Expose MULTIPLE_OCTAVE_SHIFT_DELAY config UI
 * buttons for manually shifting the internal octave
 
-v.04
+v0.5
 
 - Better ui for configuring a keyMap
 

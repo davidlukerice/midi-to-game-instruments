@@ -1,4 +1,4 @@
-const keyMaps = [
+export const keyMaps = [
   {
     name: 'GW2 - The Minstrel (C) (Auto Octave)',
     autoOctaveSwap: true,
@@ -157,5 +157,3 @@ const keyMaps = [
   // TODO: GW2 - Lute
   // TODO: GW2 - Bass Guitar
 ];
-
-module.exports = { keyMaps };
