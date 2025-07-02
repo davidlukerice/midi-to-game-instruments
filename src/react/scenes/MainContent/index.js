@@ -18,6 +18,7 @@ function MainContent() {
       <header className={styles.appHeader}>
         <MIDIControls />
       </header>
+
       <div className={styles.appContent}>
         <div className={styles.leftContent}>
           <InstrumentSelector />
