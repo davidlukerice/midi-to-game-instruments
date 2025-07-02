@@ -8,9 +8,7 @@ import MainContent from './scenes/MainContent';
 
 import '@mantine/core/styles.css';
 
-import styles from './App.css';
-
-import './App.css'
+import styles from './App.module.css';
 
 function App() {
   const config = useConfig();

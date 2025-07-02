@@ -1,18 +1,14 @@
-import { app, BrowserWindow, Menu, ipcMain } from 'electron';
-import path from 'path';
-import url from 'url';
+import { AppModule } from '../../AppModule.js';
+
+import { app, Menu, ipcMain } from 'electron';
+
 import Store from 'electron-store';
 import robot from '@hurdlegroup/robotjs';
-
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
 import { channels } from './constants.js';
 import { generateMenuTemplate } from './menuTemplate.js';
 import { keyMaps } from './defaultKeyMaps.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 robot.setKeyboardDelay(0);
 
@@ -43,19 +39,6 @@ const store = new Store({
       default: keyMaps,
     },
   },
-});
-let mainWindow;
-
-app.on('ready', createWindow);
-app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-app.on('activate', function () {
-  if (mainWindow === null) {
-    createWindow();
-  }
 });
 
 ipcMain.handle(channels.GET_CONFIG, () => {
@@ -115,27 +98,16 @@ ipcMain.on(channels.SEND_KEY_OFF, async (event, eventData) => {
   }
 });
 
-function createWindow() {
-  const startUrl =
-    process.env.ELECTRON_START_URL ||
-    url.format({
-      pathname: path.join(__dirname, '../index.html'),
-      protocol: 'file:',
-      slashes: true,
-    });
-  mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.cjs'),
-    },
-  });
-  mainWindow.loadURL(startUrl);
-  mainWindow.on('closed', function () {
-    mainWindow = null;
-  });
 
-  const menuTemplate = generateMenuTemplate({ store });
-  const menu = Menu.buildFromTemplate(menuTemplate);
-  Menu.setApplicationMenu(menu);
+class KeyHandler implements AppModule {
+  enable(): void {
+    const menuTemplate = generateMenuTemplate({ store });
+    const menu = Menu.buildFromTemplate(menuTemplate);
+    Menu.setApplicationMenu(menu);
+  }
+}
+
+
+export function startupKeyHandler(...args: ConstructorParameters<typeof KeyHandler>) {
+  return new KeyHandler(...args);
 }

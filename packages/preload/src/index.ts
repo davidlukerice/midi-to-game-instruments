@@ -1,9 +1,28 @@
-import { sha256sum } from './nodeCrypto.js';
-import { versions } from './versions.js';
 import { ipcRenderer } from 'electron';
 
-function send(channel: string, message: string) {
-  return ipcRenderer.invoke(channel, message);
+export { versions } from 'node:process';
+
+const channels = {
+  GET_CONFIG: 'config_get',
+  SET_CONFIG: 'config_set',
+
+  SEND_KEY_TAP: 'send_key_tap',
+  SEND_KEY_ON: 'send_key_on',
+  SEND_KEY_OFF: 'send_key_off',
+  SEND_SET_KEY_DELAY: 'send_set_key_delay',
 }
 
-export { sha256sum, versions, send };
+type ConfigValue = number | string
+type KeyTapEvent = {
+  key: string,
+  time?: number
+}
+
+const midiToGameInstruments = {
+  getConfig: () => ipcRenderer.invoke(channels.GET_CONFIG),
+  setConfig: (key: string, value: ConfigValue) => ipcRenderer.send(channels.SET_CONFIG, key, value),
+  sendSetKeyDelay: (delay: number) => ipcRenderer.send(channels.SEND_SET_KEY_DELAY, delay),
+  sendKey: (evt: KeyTapEvent) => ipcRenderer.send(channels.SEND_KEY_TAP, evt),
+}
+
+export { midiToGameInstruments }

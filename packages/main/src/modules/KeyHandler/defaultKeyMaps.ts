@@ -1,4 +1,21 @@
-export const keyMaps = [
+
+type NoteDefinition = {
+  key?: string,
+  octave?: number,
+  altOctave?: number,
+  altOctaveKey?: string,
+  forceInternalOctave?: number
+}
+
+type KeyMap = {
+  name: string,
+  autoOctaveSwap: boolean,
+  notes: Record<string, NoteDefinition>,
+  octaveDown?: { key: string },
+  octaveUp?: { key: string }
+}
+
+export const keyMaps: KeyMap[] = [
   {
     name: 'GW2 - The Minstrel (C) (Auto Octave)',
     autoOctaveSwap: true,
