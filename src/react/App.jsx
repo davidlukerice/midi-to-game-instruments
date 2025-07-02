@@ -1,11 +1,12 @@
-
-import { Provider } from "./components/ui/provider.jsx"
+import { MantineProvider } from '@mantine/core';
 
 import { ConfigContextProvider, useConfig } from './hooks/useConfig.js';
 import { MidiContextProvider, useMIDI } from './hooks/useMIDI.js';
 import { KeySenderProvider } from './hooks/useKeySender.js';
 
 import MainContent from './scenes/MainContent/index.js';
+
+import '@mantine/core/styles.css';
 
 import styles from './App.module.css';
 
@@ -28,7 +29,7 @@ function App() {
 }
 
 const WrappedApp = (props) => (
-  <Provider>
+  <MantineProvider>
     <ConfigContextProvider>
       <MidiContextProvider>
         <KeySenderProvider>
@@ -36,7 +37,7 @@ const WrappedApp = (props) => (
         </KeySenderProvider>
       </MidiContextProvider>
     </ConfigContextProvider>
-  </Provider>
+  </MantineProvider>
 );
 
 export default WrappedApp

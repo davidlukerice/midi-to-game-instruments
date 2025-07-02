@@ -1,5 +1,4 @@
-import React from 'react';
-import { Checkbox } from '@chakra-ui/react';
+import { Checkbox } from '@mantine/core';
 
 import { useConfig } from '../../hooks/useConfig.js';
 
@@ -16,13 +15,13 @@ function MIDIControls() {
 
   // TODO: Fix unselected checkbox styling
 
-  const onSendNotesChange = (e) => {
-    const { checked } = e.target;
+  const onSendNotesChange = (event) => {
+    const { checked } = event.currentTarget;
     setValue('sendNotes', checked);
   };
 
-  const onAutoSwapOctaveChange = (e) => {
-    const { checked } = e.target;
+  const onAutoSwapOctaveChange = (event) => {
+    const { checked } = event.currentTarget;
     setValue('autoSwapOctave', checked);
   };
 
@@ -30,19 +29,17 @@ function MIDIControls() {
     <div className={styles.controlContainer}>
       <MIDISelect />
       <Checkbox
-        isChecked={config.sendNotes}
+        checked={config.sendNotes}
         onChange={onSendNotesChange}
-        borderColor={checkboxBorderColor}
-      >
-        Send Notes
-      </Checkbox>
+        color={checkboxBorderColor}
+        label="Send Notes"
+      />
       <Checkbox
-        isChecked={config.autoSwapOctave}
+        checked={config.autoSwapOctave}
         onChange={onAutoSwapOctaveChange}
-        borderColor={checkboxBorderColor}
-      >
-        Auto swap octave
-      </Checkbox>
+        color={checkboxBorderColor}
+        label="Auto swap octave"
+      />
     </div>
   );
 }

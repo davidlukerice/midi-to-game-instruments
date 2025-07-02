@@ -1,27 +1,24 @@
-import { Select } from "@chakra-ui/react"
-
+import { Select } from '@mantine/core';
 import { useConfig } from '../hooks/useConfig.js';
 
 export default InstrumentSelector;
 
-function InstrumentSelector(props) {
+function InstrumentSelector() {
   const { config, setValue } = useConfig();
   const { selectedKeyMapIndex, keyMaps } = config;
 
-  function onChangeHandler(event) {
-    setValue('selectedKeyMapIndex', parseInt(event.target.value));
+  function onChangeHandler(selectedValue) {
+    setValue('selectedKeyMapIndex', parseInt(selectedValue));
   }
+
+  const keyMapOptions = keyMaps.map((keyMap, i) => ({
+    label: keyMap.name, value: `${i}`
+  }))
 
   return (
     <div>
       <span>Select instrument key map</span>
-      <Select value={selectedKeyMapIndex} onChange={onChangeHandler}>
-        {keyMaps.map((keyMap, i) => (
-          <option key={i} value={i}>
-            {keyMap.name}
-          </option>
-        ))}
-      </Select>
+      <Select data={keyMapOptions} value={`${selectedKeyMapIndex}`} onChange={onChangeHandler} />
     </div>
   );
 }

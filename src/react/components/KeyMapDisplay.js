@@ -1,4 +1,4 @@
-import ReactJsonView from '@microlink/react-json-view';
+import { JsonEditor, githubLightTheme } from 'json-edit-react'
 
 import { useConfig } from '../hooks/useConfig.js';
 
@@ -12,15 +12,16 @@ function KeyMapDisplay() {
 
   // TODO: May be able to allow edit/add from here for updating the configs
 
+  const keyMap = keyMaps[selectedKeyMapIndex]
+
   return (
     <div className={styles.container}>
       <h3>KeyMap</h3>
       <div className={styles.jsonContainer}>
-        <ReactJsonView
-          name="keyMap"
-          src={keyMaps[selectedKeyMapIndex]}
-          theme="harmonic"
-          displayDataTypes={false}
+        <JsonEditor
+          data={keyMap}
+          viewOnly
+          theme={githubLightTheme}
         />
       </div>
     </div>
