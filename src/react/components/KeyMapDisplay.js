@@ -1,6 +1,6 @@
 import ReactJsonView from '@microlink/react-json-view';
 
-import { useConfig } from '../hooks/useConfig';
+import { useConfig } from '../hooks/useConfig.js';
 
 import styles from './KeyMapDisplay.module.css';
 

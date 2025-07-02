@@ -4,11 +4,15 @@ import url from 'url';
 import Store from 'electron-store';
 import robot from '@hurdlegroup/robotjs';
 
-import constants from '../src/shared/constants.js';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+import { channels } from './constants.js';
 import { generateMenuTemplate } from './menuTemplate.js';
 import { keyMaps } from './defaultKeyMaps.js';
 
-const { channels } = constants
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 robot.setKeyboardDelay(0);
 
@@ -123,7 +127,7 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.cjs'),
     },
   });
   mainWindow.loadURL(startUrl);

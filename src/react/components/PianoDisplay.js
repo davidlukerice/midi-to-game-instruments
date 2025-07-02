@@ -1,5 +1,5 @@
-import React from 'react';
-import { useKeySender } from '../hooks/useKeySender';
+
+import { useKeySender } from '../hooks/useKeySender.js';
 
 export default PianoDisplay;
 

@@ -3,7 +3,7 @@ import { Checkbox } from '@chakra-ui/react';
 
 import { useConfig } from '../../hooks/useConfig.js';
 
-import MIDISelect from './MIDISelect';
+import MIDISelect from './MIDISelect.js';
 
 import styles from './styles.module.css';
 

@@ -1,11 +1,11 @@
-import React from 'react';
-import { Provider } from "./components/ui/provider"
 
-import { ConfigContextProvider, useConfig } from './hooks/useConfig';
-import { MidiContextProvider, useMIDI } from './hooks/useMIDI';
-import { KeySenderProvider } from './hooks/useKeySender';
+import { Provider } from "./components/ui/provider.jsx"
 
-import MainContent from './scenes/MainContent';
+import { ConfigContextProvider, useConfig } from './hooks/useConfig.js';
+import { MidiContextProvider, useMIDI } from './hooks/useMIDI.js';
+import { KeySenderProvider } from './hooks/useKeySender.js';
+
+import MainContent from './scenes/MainContent/index.js';
 
 import styles from './App.module.css';
 
@@ -27,7 +27,7 @@ function App() {
   return <div className={styles.app}>{content}</div>;
 }
 
-export default (props) => (
+const WrappedApp = (props) => (
   <Provider>
     <ConfigContextProvider>
       <MidiContextProvider>
@@ -38,3 +38,5 @@ export default (props) => (
     </ConfigContextProvider>
   </Provider>
 );
+
+export default WrappedApp

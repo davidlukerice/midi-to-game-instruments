@@ -7,8 +7,3 @@ export const channels = {
   SEND_KEY_OFF: 'send_key_off',
   SEND_SET_KEY_DELAY: 'send_set_key_delay',
 }
-
-const constants = {
-  channels
-};
-export default constants

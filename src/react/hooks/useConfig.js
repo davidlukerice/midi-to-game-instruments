@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { set, cloneDeep } from 'lodash';
 
-import { channels } from '../../shared/constants';
-
-const { myApi } = window;
+const { midiToGameInstruments } = window;
 
 const configContext = React.createContext();
 
@@ -22,7 +20,7 @@ function ConfigContextProvider(props) {
 
   useEffect(() => {
     (async () => {
-      const response = await myApi.invoke(channels.GET_CONFIG);
+      const response = await midiToGameInstruments.getConfig();
 
       setState((curr) => ({
         ...curr,
@@ -46,7 +44,7 @@ function ConfigContextProvider(props) {
         config: newConfig,
       };
     });
-    myApi.send(channels.SET_CONFIG, key, value);
+    midiToGameInstruments.setConfig(key, value);
   }
 }
 

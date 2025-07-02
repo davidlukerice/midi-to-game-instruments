@@ -1,6 +1,6 @@
 import { WebMidi } from 'webmidi';
 import React, { useEffect, useState, useContext } from 'react';
-import { useConfig } from './useConfig';
+import { useConfig } from './useConfig.js';
 
 const MIDIContext = React.createContext();
 

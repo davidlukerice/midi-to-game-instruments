@@ -1,12 +1,10 @@
-import React from 'react';
+import { useConfig } from '../../hooks/useConfig.js';
 
-import { useConfig } from '../../hooks/useConfig';
-
-import MIDIControls from '../../components/MIDIControls';
-import InstrumentSelector from '../../components/InstrumentSelector';
-import PianoDisplay from '../../components/PianoDisplay';
-import KeyMapDisplay from '../../components/KeyMapDisplay';
-import MIDIMessageDisplay from '../../components/MIDIMessageDisplay';
+import MIDIControls from '../../components/MIDIControls/index.js';
+import InstrumentSelector from '../../components/InstrumentSelector.js';
+import PianoDisplay from '../../components/PianoDisplay.js';
+import KeyMapDisplay from '../../components/KeyMapDisplay.js';
+import MIDIMessageDisplay from '../../components/MIDIMessageDisplay.js';
 
 import styles from './styles.module.css';
 

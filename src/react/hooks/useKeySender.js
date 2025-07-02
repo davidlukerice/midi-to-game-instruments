@@ -1,9 +1,8 @@
 import React, { useEffect, useContext, useState, useRef } from 'react';
-import { channels } from '../../shared/constants';
-import { useMIDI } from '../hooks/useMIDI';
-import { useConfig } from '../hooks/useConfig';
+import { useMIDI } from '../hooks/useMIDI.js';
+import { useConfig } from '../hooks/useConfig.js';
 
-const { myApi } = window;
+const { midiToGameInstruments } = window;
 
 const keySenderContext = React.createContext();
 
@@ -79,7 +78,7 @@ function KeySenderProvider(props) {
       }));
 
       _addMessage(`noteOn ${mapKey} -> '${keyToSend}' : ${note?.octave}`);
-      _sendKey(channels.SEND_KEY_TAP, keyToSend, keyTime);
+      _sendKey(keyToSend, keyTime);
       // _sendKey(channels.SEND_KEY_ON, note.key, keyTime);
     }
 
@@ -126,19 +125,19 @@ function KeySenderProvider(props) {
       while (internalState.current.octave < noteOctave) {
         if (noteOctave - internalState.current.octave > 1) {
           delayAdded = true;
-          myApi.send(channels.SEND_SET_KEY_DELAY, {
+          midiToGameInstruments.sendSetKeyDelay({
             delay: multipleOctaveShiftDelay,
           });
         } else if (delayAdded) {
           delayAdded = false;
-          myApi.send(channels.SEND_SET_KEY_DELAY, { delay: 0 });
+          midiToGameInstruments.sendSetKeyDelay({ delay: 0 });
         }
         _addMessage(
           `shift up octave ${internalState.current.octave} towards ${noteOctave}`
         );
         const upKey = keyMap.octaveUp.key;
         // TODO: add delays to fix multiple octave jumps?
-        _sendKey(channels.SEND_KEY_TAP, upKey);
+        _sendKey(upKey);
         internalState.current.octave += 1;
 
         octaveShifts += 1;
@@ -148,20 +147,20 @@ function KeySenderProvider(props) {
       }
       while (internalState.current.octave > noteOctave) {
         if (internalState.current.octave - noteOctave > 1) {
-          myApi.send(channels.SEND_SET_KEY_DELAY, {
+          midiToGameInstruments.sendSetKeyDelay({
             delay: multipleOctaveShiftDelay,
           });
           delayAdded = true;
         } else if (delayAdded) {
           delayAdded = false;
-          myApi.send(channels.SEND_SET_KEY_DELAY, { delay: 0 });
+          midiToGameInstruments.sendSetKeyDelay({ delay: 0 });
         }
 
         _addMessage(
           `shift down octave ${internalState.current.octave} towards ${noteOctave}`
         );
         const downKey = keyMap.octaveDown.key;
-        _sendKey(channels.SEND_KEY_TAP, downKey);
+        _sendKey(downKey);
         internalState.current.octave -= 1;
 
         octaveShifts += 1;
@@ -171,7 +170,7 @@ function KeySenderProvider(props) {
       }
 
       if (delayAdded) {
-        myApi.send(channels.SEND_SET_KEY_DELAY, { delay: 0 });
+        midiToGameInstruments.sendSetKeyDelay({ delay: 0 });
       }
 
       return { shiftedOctaves: true, useAltOctaveKey: false };
@@ -194,8 +193,8 @@ function KeySenderProvider(props) {
     }));
   }
 
-  function _sendKey(event, key, time) {
-    myApi.send(event, {
+  function _sendKey(key, time) {
+    midiToGameInstruments.sendKey({
       key: key,
       eventTime: time,
     });

@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import scrollIntoView from 'smooth-scroll-into-view-if-needed';
 
-import { useKeySender } from '../hooks/useKeySender';
+import { useKeySender } from '../hooks/useKeySender.js';
 
 import styles from './MIDIMessageDisplay.module.css';
 
