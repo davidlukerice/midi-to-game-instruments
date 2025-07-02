@@ -7,8 +7,7 @@ import robot from '@hurdlegroup/robotjs';
 
 import { channels } from './constants.js';
 import { generateMenuTemplate } from './menuTemplate.js';
-import { keyMaps } from './defaultKeyMaps.js';
-
+import { keyMaps } from './defaultKeyMaps/index.js';
 
 robot.setKeyboardDelay(0);
 
