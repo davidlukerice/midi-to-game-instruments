@@ -106,9 +106,8 @@ function generateMenuTemplate({ store }) {
         {
           label: 'Learn More',
           click: async () => {
-            const { shell } = require('electron');
             await shell.openExternal(
-              'https://github.com/davidlukerice/midi-to-keypress'
+              'https://github.com/davidlukerice/midi-to-game-instruments'
             );
           },
         },

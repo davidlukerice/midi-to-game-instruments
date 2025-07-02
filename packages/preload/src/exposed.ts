@@ -6,7 +6,9 @@ const isExport = (key: string): key is keyof typeof exports => Object.hasOwn(exp
 for (const exportsKey in exports) {
 
   if (isExport(exportsKey)) {
-    contextBridge.exposeInMainWorld(btoa(exportsKey), exports[exportsKey]);
+    const cleanedExportKey = exportsKey
+    const exportedValue = exports[exportsKey]
+    contextBridge.exposeInMainWorld(cleanedExportKey, exportedValue);
   }
 }
 
