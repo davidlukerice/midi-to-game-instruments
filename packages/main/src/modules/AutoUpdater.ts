@@ -1,5 +1,8 @@
-import {AppModule} from '../AppModule.js';
-import electronUpdater, {type AppUpdater, type Logger} from 'electron-updater';
+import { AppModule } from '../AppModule.js';
+import electronUpdater, { type AppUpdater, type Logger } from 'electron-updater';
+
+const meta = import.meta as unknown as { env: Record<string, string> }
+const metaEnv = meta.env
 
 type DownloadNotification = Parameters<AppUpdater['checkForUpdatesAndNotify']>[0];
 
@@ -29,7 +32,7 @@ export class AutoUpdater implements AppModule {
   getAutoUpdater(): AppUpdater {
     // Using destructuring to access autoUpdater due to the CommonJS module of 'electron-updater'.
     // It is a workaround for ESM compatibility issues, see https://github.com/electron-userland/electron-builder/issues/7976.
-    const {autoUpdater} = electronUpdater;
+    const { autoUpdater } = electronUpdater;
     return autoUpdater;
   }
 
@@ -39,8 +42,8 @@ export class AutoUpdater implements AppModule {
       updater.logger = this.#logger || null;
       updater.fullChangelog = true;
 
-      if (import.meta.env.VITE_DISTRIBUTION_CHANNEL) {
-        updater.channel = import.meta.env.VITE_DISTRIBUTION_CHANNEL;
+      if (metaEnv.VITE_DISTRIBUTION_CHANNEL) {
+        updater.channel = metaEnv.VITE_DISTRIBUTION_CHANNEL;
       }
 
       return await updater.checkForUpdatesAndNotify(this.#notification);

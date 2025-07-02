@@ -2,7 +2,7 @@ import { AppModule } from '../../AppModule.js';
 
 import { app, Menu, ipcMain } from 'electron';
 
-import Store from 'electron-store';
+import ElectronStore from 'electron-store';
 import robot from '@hurdlegroup/robotjs';
 
 import { channels } from './constants.js';
@@ -11,7 +11,7 @@ import { keyMaps } from './defaultKeyMaps/index.js';
 
 robot.setKeyboardDelay(0);
 
-const store = new Store({
+const store = new ElectronStore({
   schema: {
     selectedInputName: {
       type: 'string',
@@ -100,7 +100,7 @@ ipcMain.on(channels.SEND_KEY_OFF, async (event, eventData) => {
 
 class KeyHandler implements AppModule {
   enable(): void {
-    const menuTemplate = generateMenuTemplate({ store });
+    const menuTemplate = generateMenuTemplate(store);
     const menu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(menu);
   }
