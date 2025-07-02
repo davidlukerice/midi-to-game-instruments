@@ -5,30 +5,44 @@
   "description": "App for converting midi to key presses, primarily for playing instruments in varying games",
   "author": "davidlukerice",
   "productName": "MIDI to Game Instruments",
-  "main": "electron/main.js",
+  "main": "packages/entry-point.mjs",
   "homepage": "./",
   "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=23.0.0"
+  },
   "scripts": {
-    "start": "npm run start:win",
-    "start:win": "react-scripts start",
-    "start:mac": "react-scripts start",
-    "start-electron": "npm run start-electron:win",
-    "start-electron:win": "set ELECTRON_START_URL=http://localhost:3000 & electron .",
-    "build": "react-scripts build",
-    "build-electron": "npm run build-electron:win",
-    "build-electron:win": "mkdir build/src & robocopy electron build/electron /S & robocopy src/shared build/src/shared /S",
-    "build-electron:mac": "mkdir build/src && cp -r electron/. build/electron && cp -r src/shared/. build/src/shared",
-    "package": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never",
-    "package:with-mac": "electron-builder build --mac --win -c.extraMetadata.main=build/electron/main.js --publish never",
-    "rebuild-robotjs": "npm rebuild --runtime=electron --target=9.0.3 --disturl=https://atom.io/download/atom-shell --abi=83",
-    "test": "react-scripts test"
+    "build": "npm run build -ws --if-present",
+    "compile": "npm run build && electron-builder build --config electron-builder.mjs",
+    "test": "npx playwright test ./tests/e2e.spec.ts",
+    "start": "node packages/dev-mode.js",
+    "typecheck": "npm run typecheck -ws --if-present",
+    "old:start": "npm run start:win",
+    "old:start:win": "react-scripts start",
+    "old:start:mac": "react-scripts start",
+    "old:start-electron": "npm run start-electron:win",
+    "old:start-electron:win": "set ELECTRON_START_URL=http://localhost:3000 & electron .",
+    "old:build-electron": "npm run build-electron:win",
+    "old:build-electron:win": "mkdir build/src & robocopy electron build/electron /S & robocopy src/shared build/src/shared /S",
+    "old:build-electron:mac": "mkdir build/src && cp -r electron/. build/electron && cp -r src/shared/. build/src/shared",
+    "old:package": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never",
+    "old:package:with-mac": "electron-builder build --mac --win -c.extraMetadata.main=build/electron/main.js --publish never",
+    "old:rebuild-robotjs": "npm rebuild --runtime=electron --target=9.0.3 --disturl=https://atom.io/download/atom-shell --abi=83",
+    "old:test": "react-scripts test"
   },
   "devDependencies": {
+    "@npmcli/map-workspaces": "4.0.2",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
-    "electron": "^37.1.0",
-    "electron-builder": "^26.0.12",
+    "@types/node": "24.0.3",
+    "browserslist-config-erb": "^0.0.3",
+    "electron": "36.5.0",
+    "electron-builder": "26.0.12",
+    "glob": "11.0.3",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
     "mkdirp": "^3.0.1",
@@ -36,20 +50,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@hurdlegroup/robotjs": "^0.12.3",
-    "@mantine/core": "^8.1.2",
-    "@mantine/hooks": "^8.1.2",
-    "@microlink/react-json-view": "^1.26.2",
-    "electron-store": "^10.1.0",
-    "json-edit-react": "^1.27.2",
-    "lodash": "^4.17.21",
-    "next-themes": "^0.4.6",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-icons": "^5.5.0",
-    "react-scripts": "5.0.1",
-    "smooth-scroll-into-view-if-needed": "^2.0.2",
-    "webmidi": "^3.1.12"
+    "@app/main": "*"
   },
   "build": {
     "appId": "com.davidlukerice.midi-to-game-instruments",
@@ -71,16 +72,20 @@
       "pre-commit": "lint-staged"
     }
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+  "browserslist": [
+    "extends browserslist-config-erb"
+  ],
+  "prettier": {
+    "overrides": [
+      {
+        "files": [
+          ".prettierrc",
+          ".eslintrc"
+        ],
+        "options": {
+          "parser": "json"
+        }
+      }
     ]
   }
 }

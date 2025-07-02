@@ -113,7 +113,11 @@ See `/electron/defaultKeyMaps` for current default keymaps.
 }
 ```
 
-## Running a local version on Windows
+## Development
+
+The app is based on the [vite-electron-builder boilerplate](https://github.com/cawa-93/vite-electron-builder)
+
+### Running a local version on Windows
 
 Install required dependencies
 
@@ -136,7 +140,7 @@ Start up the related dev servers in different terminal windows
 - `npm run start`
 - `npm run electron-start`
 
-## Building and Packaging on Windows
+### Building and Packaging on Windows
 
 - `npm run build`
 - `npm run build-electron`
