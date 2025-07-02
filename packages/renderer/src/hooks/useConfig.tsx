@@ -1,22 +1,25 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { set, cloneDeep } from 'lodash';
+import { midiToGameInstruments } from '@app/preload'
 
-const { midiToGameInstruments } = window;
+const defaultState = {
+  isLoading: true,
+  appName: '',
+  appVersion: '',
+  config: null,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  setValue: (_key: string, _value: string) => null
+}
 
-const configContext = React.createContext();
+const configContext = React.createContext(defaultState);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { ConfigContextProvider, useConfig };
 
 function ConfigContextProvider(props) {
   const { children } = props;
 
-  const [state, setState] = useState({
-    isLoading: true,
-    appName: '',
-    appVersion: '',
-    config: null,
-    setValue,
-  });
+  const [state, setState] = useState({ ...defaultState, setValue });
 
   useEffect(() => {
     (async () => {
@@ -36,7 +39,7 @@ function ConfigContextProvider(props) {
     <configContext.Provider value={state} > {children} </configContext.Provider>
   );
 
-  function setValue(key, value) {
+  function setValue(key: string, value: string) {
     setState((curr) => {
       const newConfig = set(cloneDeep(curr.config), key, value);
       return {

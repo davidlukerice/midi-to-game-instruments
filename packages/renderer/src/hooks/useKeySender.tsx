@@ -1,8 +1,7 @@
 import React, { useEffect, useContext, useState, useRef } from 'react';
+import { midiToGameInstruments } from '@app/preload'
 import { useMIDI } from '../hooks/useMIDI';
 import { useConfig } from '../hooks/useConfig';
-
-const { midiToGameInstruments } = window;
 
 const keySenderContext = React.createContext();
 
