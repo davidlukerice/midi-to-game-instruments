@@ -72,7 +72,8 @@ function KeySenderProvider(props: { children: ReactNode }) {
     }
 
     function _noteOnHandler(e: NoteMessageEvent) {
-      const mapKey = `${e.note.name}${e.note.octave}`
+      const { name, octave, accidental } = e.note
+      const mapKey = `${name}${accidental ?? ''}${octave}`
       const note = keyMap.notes[mapKey]
       const keyTime = Date.now()
 
