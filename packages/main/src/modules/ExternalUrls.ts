@@ -3,8 +3,8 @@ import { ModuleContext } from '../ModuleContext.js';
 import { shell } from 'electron';
 import { URL } from 'node:url';
 
-const meta = import.meta as unknown as { env: Record<string, string> }
-const metaEnv = meta.env
+const metaEnv = import.meta.env as unknown as Record<string, string>
+
 
 export class ExternalUrls implements AppModule {
 

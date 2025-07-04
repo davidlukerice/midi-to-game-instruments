@@ -1,8 +1,7 @@
 import { AppModule } from '../AppModule.js';
 import electronUpdater, { type AppUpdater, type Logger } from 'electron-updater';
 
-const meta = import.meta as unknown as { env: Record<string, string> }
-const metaEnv = meta.env
+const metaEnv = import.meta.env as unknown as Record<string, string>
 
 type DownloadNotification = Parameters<AppUpdater['checkForUpdatesAndNotify']>[0];
 

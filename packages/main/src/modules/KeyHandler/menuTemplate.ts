@@ -18,7 +18,7 @@ type ConfigStore = ElectronStore<{
 }>
 
 function generateMenuTemplate(store: ConfigStore): MenuTemplateItem[] {
-  const iconItem: MenuTemplateItem = isMac ? {
+  const iconItem: MenuTemplateItem = {
     label: app.name,
     submenu: [
       { role: 'about' },
@@ -30,7 +30,7 @@ function generateMenuTemplate(store: ConfigStore): MenuTemplateItem[] {
       { type: 'separator' },
       { role: 'quit' },
     ],
-  } : [] as MenuTemplateItem
+  }
 
   const fileItem: MenuTemplateItem = {
     label: 'File',
@@ -123,8 +123,15 @@ function generateMenuTemplate(store: ConfigStore): MenuTemplateItem[] {
     ],
   }
 
-  return [
+
+  return isMac ? [
     iconItem,
+    fileItem,
+    editItem,
+    viewItem,
+    windowItem,
+    helpItem,
+  ] : [
     fileItem,
     editItem,
     viewItem,
