@@ -28,12 +28,12 @@ function App() {
   return <div className={styles.app}>{content}</div>
 }
 
-const WrappedApp = (props) => (
+const WrappedApp = () => (
   <MantineProvider>
     <ConfigContextProvider>
       <MidiContextProvider>
         <KeySenderProvider>
-          <App {...props} />
+          <App />
         </KeySenderProvider>
       </MidiContextProvider>
     </ConfigContextProvider>

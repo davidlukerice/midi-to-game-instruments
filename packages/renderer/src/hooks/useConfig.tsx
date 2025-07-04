@@ -9,7 +9,7 @@ import { set, cloneDeep } from 'lodash'
 import { midiToGameInstruments } from '@app/preload'
 
 // TODO: Get config types from backend ElectronStore schema
-type NoteDefinition = {
+export type NoteDefinition = {
   key?: string
   octave?: number
   altOctave?: number
@@ -17,7 +17,7 @@ type NoteDefinition = {
   forceInternalOctave?: number
 }
 
-type KeyMap = {
+export type KeyMap = {
   name: string
   autoOctaveSwap: boolean
   notes: Record<string, NoteDefinition>

@@ -12,7 +12,9 @@ function MIDIMessageDisplay() {
   const messagesEndRef = useRef(null)
 
   const scrollToBottom = () => {
-    scrollIntoView(messagesEndRef.current)
+    if (messagesEndRef.current) {
+      scrollIntoView(messagesEndRef.current)
+    }
   }
 
   useEffect(scrollToBottom, [sentMessages])

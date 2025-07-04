@@ -10,6 +10,8 @@ import { midiToGameInstruments } from '@app/preload'
 
 import { useMIDI } from '../hooks/useMIDI'
 import { useConfig } from '../hooks/useConfig'
+import type { NoteMessageEvent } from 'webmidi'
+import type { NoteDefinition } from '../../../main/src/modules/KeyHandler/types'
 
 type KeySenderState = {
   sentMessages: string[]
@@ -23,6 +25,7 @@ const defaultState: KeySenderState = {
 
 const keySenderContext = createContext(defaultState)
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { KeySenderProvider, useKeySender }
 
 const MESSAGE_LIMIT = 100
@@ -57,18 +60,18 @@ function KeySenderProvider(props: { children: ReactNode }) {
     const keyMap = keyMaps[selectedKeyMapIndex]
 
     // TODO: Allow toggle between note on/off and tap?
-    selectedInput.addListener('noteon', 'all', _noteOnHandler)
-    //selectedInput.addListener('noteoff', 'all', noteOffHandler);
+    selectedInput.addListener('noteon', _noteOnHandler)
+    //selectedInput.addListener('noteoff', noteOffHandler);
 
     return () => {
       if (!selectedInput) {
         return
       }
-      selectedInput.removeListener('noteon', 'all', _noteOnHandler)
-      //selectedInput.removeListener('noteoff', 'all', noteOffHandler);
+      selectedInput.removeListener('noteon', _noteOnHandler)
+      //selectedInput.removeListener('noteoff', noteOffHandler);
     }
 
-    function _noteOnHandler(e) {
+    function _noteOnHandler(e: NoteMessageEvent) {
       const mapKey = `${e.note.name}${e.note.octave}`
       const note = keyMap.notes[mapKey]
       const keyTime = Date.now()
@@ -80,9 +83,10 @@ function KeySenderProvider(props: { children: ReactNode }) {
 
       const { useAltOctaveKey } = autoSwapOctave
         ? _handleOctaveShift({ note })
-        : { shiftedOctaves: false, useAltOctaveKey: false }
+        : { useAltOctaveKey: false }
 
-      const keyToSend = useAltOctaveKey ? note.altOctaveKey : note.key
+      const keyToSend =
+        useAltOctaveKey && note.altOctaveKey ? note.altOctaveKey : note.key
 
       setState((curr) => ({
         ...curr,
@@ -110,23 +114,23 @@ function KeySenderProvider(props: { children: ReactNode }) {
     /**
      * Transitions from the current octave to the one on the next played note
      * @param options.note
-     * @return { shiftedOctaves, useAltOctaveKey }
+     * @return { useAltOctaveKey }
      */
-    function _handleOctaveShift({ note }) {
-      if (!note.hasOwnProperty('octave')) {
-        return { shiftedOctaves: false, useAltOctaveKey: false }
+    function _handleOctaveShift({ note }: { note: NoteDefinition }) {
+      if (!('octave' in note)) {
+        return { useAltOctaveKey: false }
       }
 
-      const noteOctave = note.octave
+      const noteOctave = note.octave ?? internalState.current.octave
 
       if (noteOctave === internalState.current.octave) {
-        return { shiftedOctaves: false, useAltOctaveKey: false }
+        return { useAltOctaveKey: false }
       }
       if (
-        note.hasOwnProperty('altOctave') &&
+        'altOctave' in note &&
         note.altOctave === internalState.current.octave
       ) {
-        return { shiftedOctaves: false, useAltOctaveKey: true }
+        return { useAltOctaveKey: true }
       }
 
       let delayAdded = false
@@ -147,9 +151,11 @@ function KeySenderProvider(props: { children: ReactNode }) {
         _addMessage(
           `shift up octave ${internalState.current.octave} towards ${noteOctave}`
         )
-        const upKey = keyMap.octaveUp.key
+        const upKey = keyMap.octaveUp?.key
         // TODO: add delays to fix multiple octave jumps?
-        _sendKey(upKey)
+        if (upKey) {
+          _sendKey(upKey)
+        }
         internalState.current.octave += 1
 
         octaveShifts += 1
@@ -171,8 +177,10 @@ function KeySenderProvider(props: { children: ReactNode }) {
         _addMessage(
           `shift down octave ${internalState.current.octave} towards ${noteOctave}`
         )
-        const downKey = keyMap.octaveDown.key
-        _sendKey(downKey)
+        const downKey = keyMap.octaveDown?.key
+        if (downKey) {
+          _sendKey(downKey)
+        }
         internalState.current.octave -= 1
 
         octaveShifts += 1
@@ -195,7 +203,7 @@ function KeySenderProvider(props: { children: ReactNode }) {
     </keySenderContext.Provider>
   )
 
-  function _addMessage(message) {
+  function _addMessage(message: string) {
     setState((curr) => ({
       ...curr,
       sentMessages: [...curr.sentMessages, message].slice(
@@ -205,10 +213,10 @@ function KeySenderProvider(props: { children: ReactNode }) {
     }))
   }
 
-  function _sendKey(key, time) {
+  function _sendKey(key: string, time: number = 0) {
     midiToGameInstruments.sendKey({
       key: key,
-      eventTime: time
+      time: time
     })
   }
 }
