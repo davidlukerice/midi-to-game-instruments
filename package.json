@@ -1,54 +1,47 @@
 {
-  "name": "midi-to-keypress",
-  "version": "0.2.0",
+  "name": "midi-to-game-instruments",
+  "version": "0.3.0",
   "private": true,
-  "description": "App for converting midi to key presses. Built with Electron and React.",
+  "description": "App for converting midi to key presses, primarily for playing instruments in varying games",
   "author": "davidlukerice",
-  "productName": "MIDI to Keypress",
-  "main": "electron/main.js",
+  "productName": "MIDI to Game Instruments",
+  "main": "packages/entry-point.mjs",
   "homepage": "./",
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=23.0.0"
+  },
   "scripts": {
-    "start": "npm run start:win",
-    "start:win": "react-scripts start",
-    "start:mac": "react-scripts start",
-    "start-electron": "npm run start-electron:win",
-    "start-electron:win": "set ELECTRON_START_URL=http://localhost:3000 & electron .",
-    "build": "react-scripts build",
-    "build-electron": "npm run build-electron:win",
-    "build-electron:win": "mkdir build/src & robocopy electron build/electron /S & robocopy src/shared build/src/shared /S",
-    "build-electron:mac": "mkdir build/src && cp -r electron/. build/electron && cp -r src/shared/. build/src/shared",
-    "package": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never",
-    "package:with-mac": "electron-builder build --mac --win -c.extraMetadata.main=build/electron/main.js --publish never",
-    "rebuild-robotjs": "npm rebuild --runtime=electron --target=9.0.3 --disturl=https://atom.io/download/atom-shell --abi=83",
-    "test": "react-scripts test"
+    "build": "npm run build -ws --if-present",
+    "compile": "npm run build && electron-builder build --config electron-builder.mjs",
+    "test": "npx playwright test ./tests/e2e.spec.ts",
+    "start": "node packages/dev-mode.js",
+    "typecheck": "npm run typecheck -ws --if-present"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "electron": "^9.3.1",
-    "electron-builder": "^22.7.0",
-    "husky": "^4.2.5",
-    "lint-staged": "^10.2.9",
-    "mkdirp": "^1.0.4",
-    "prettier": "^2.0.5"
+    "@npmcli/map-workspaces": "4.0.2",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "24.0.10",
+    "browserslist-config-erb": "^0.0.3",
+    "electron": "37.2.0",
+    "electron-builder": "26.0.12",
+    "glob": "11.0.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "mkdirp": "^3.0.1",
+    "prettier": "^3.6.2",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@chakra-ui/core": "^0.8.0",
-    "@emotion/core": "^10.0.28",
-    "@emotion/styled": "^10.0.27",
-    "electron-store": "^5.2.0",
-    "emotion-theming": "^10.0.27",
-    "lodash": "^4.17.19",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-json-view": "^1.19.1",
-    "react-scripts": "3.4.1",
-    "robotjs": "git+https://github.com/octalmage/robotjs.git#master",
-    "smooth-scroll-into-view-if-needed": "^1.1.28",
-    "webmidi": "^2.5.1"
+    "@app/main": "*"
   },
   "build": {
+    "appId": "com.davidlukerice.midi-to-game-instruments",
     "files": [
       "build/**/*",
       "node_modules/**/*"
@@ -67,16 +60,7 @@
       "pre-commit": "lint-staged"
     }
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "browserslist": [
+    "extends browserslist-config-erb"
+  ]
 }

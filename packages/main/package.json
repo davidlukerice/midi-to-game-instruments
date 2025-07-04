@@ -1,0 +1,29 @@
+{
+  "name": "@app/main",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "@app/preload": "*",
+    "@app/renderer": "*",
+    "@hurdlegroup/robotjs": "^0.12.3",
+    "electron-store": "^10.1.0"
+  },
+  "devDependencies": {
+    "@app/electron-versions": "*",
+    "electron-devtools-installer": "3.2.0",
+    "electron-updater": "6.6.2",
+    "json-edit-react": "^1.27.2",
+    "next-themes": "^0.4.6",
+    "typescript": "5.8.3",
+    "vite": "^7.0.0"
+  }
+}

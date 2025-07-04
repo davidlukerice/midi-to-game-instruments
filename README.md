@@ -1,26 +1,40 @@
 # midi-to-game-instruments
+
 <img alt="App Screenshot" src="meda/screenshot.png?raw=true" width="550px">
 
 This application converts midi messages to keyboard key presses.
 
-I've primarily made this to be able to play GuildWars2 Instruments with a midi keyboard. It also provides some additional tools, like automatically shifting octaves in game, to help make playing smoother and more fun (at least in my opinion).
-There's still lag inherent in playing GuildWars 2 instruments, but it's fairly consistent, so I tend to have my piano's sound louder than the in game instrument's sound and follow that one instead of what's in game.
+I've primarily made this to be able to play GuildWars2 Instruments with a midi
+keyboard. It also provides some additional tools, like automatically shifting
+octaves in game, to help make playing smoother and more fun (at least in my
+opinion). There's still lag inherent in playing GuildWars 2 instruments, but
+it's fairly consistent, so I tend to have my piano's sound louder than the in
+game instrument's sound and follow that one instead of what's in game.
 
-Primarily developing on windows 10, so support on other OSs is untested. It's theoretically possible, but I won't currently be proving builds.
+Primarily developing on windows 10, so support on other OSs is untested. It's
+theoretically possible, but I won't currently be proving builds.
 
 ## Guild Wars 2 Policy
 
-Guild Wars 2 "macro" policy: https://en-forum.guildwars2.com/discussion/65554/policy-macros-and-macro-use
+Guild Wars 2 "macro" policy:
+https://en-forum.guildwars2.com/discussion/65554/policy-macros-and-macro-use
 
-> You may use music macros to compose or perform in-game music. As long as the macro is used solely for the composition or performance of in-game music and the account is actively attended by a player, we do not place restrictions on its use.
+> You may use music macros to compose or perform in-game music. As long as the
+> macro is used solely for the composition or performance of in-game music and
+> the account is actively attended by a player, we do not place restrictions on
+> its use.
 
-I and this tool have no affiliation with Guild Wars 2 or ArenaNet.
-Since this is for music performance only, it should be fine, but use at your own risk.
-If you feel this tool provides functionality against Guild Wars 2's policy, don't use it.
+I and this tool have no affiliation with Guild Wars 2 or ArenaNet. Since this is
+for music performance only, it should be fine, but use at your own risk. If you
+feel this tool provides functionality against Guild Wars 2's policy, don't use
+it.
 
 ## Config
 
-Most values in the app are exposed via a .json config. Use `File -> Open Config` or `File -> Open Config Folder` to edit it. Once the app is started and a change is made, the config will automatically be generated for you. If it's become messed up, delete any existing config and restart the application.
+Most values in the app are exposed via a .json config. Use `File -> Open Config`
+or `File -> Open Config Folder` to edit it. Once the app is started and a change
+is made, the config will automatically be generated for you. If it's become
+messed up, delete any existing config and restart the application.
 
 ### selectedInputName
 
@@ -32,15 +46,24 @@ The index of the selected key map in the keyMaps array.
 
 ### sendNotes
 
-Whether key presses should be sending. I use it when working out a song on the piano before I want anything sent in game.
+Whether key presses should be sending. I use it when working out a song on the
+piano before I want anything sent in game.
 
 ### autoSwapOctave
 
-The app will retain internally what octave is currently being played. If a note is in a different octave, the app will try and auto swap to that new notes octave. It works fairly well when moving a single octave but can have trouble with two or more since GW2 can be inconsistent when quickly tapping octave shifts.
+The app will retain internally what octave is currently being played. If a note
+is in a different octave, the app will try and auto swap to that new notes
+octave. It works fairly well when moving a single octave but can have trouble
+with two or more since GW2 can be inconsistent when quickly tapping octave
+shifts.
 
 ### multipleOctaveShiftDelay
 
-A delay gets added when auto shifting more than one octave. If this is too low, the game may not recognize multiple octave shifts. If too high, it adds unnecessary delay and can mess up how smoothly the song is playing. 75 tends to work fairly well for me, but it depends on ping and if the GW2 client is behaving well or not.
+A delay gets added when auto shifting more than one octave. If this is too low,
+the game may not recognize multiple octave shifts. If too high, it adds
+unnecessary delay and can mess up how smoothly the song is playing. 75 tends to
+work fairly well for me, but it depends on ping and if the GW2 client is
+behaving well or not.
 
 ### keyMaps
 
@@ -113,31 +136,25 @@ See `/electron/defaultKeyMaps` for current default keymaps.
 }
 ```
 
-## Running a local version on Windows
+## Development
+
+The app is based on the
+[vite-electron-builder boilerplate](https://github.com/cawa-93/vite-electron-builder)
+
+### Running a local version on Windows
 
 Install required dependencies
 
 - `npm i` to download the latest
 - Copy `.env-example` to `.env`
 
-Build RobotJS (https://github.com/octalmage/robotjs/issues/466#issuecomment-600197990)
-
-- `npm install -g node-gyp`
-- `npx electron-rebuild -f -t prod,optional,dev -v 9.0.3 -w robotjs`
-
-Alternative method for building RobotJS
-(https://stackoverflow.com/a/46897783/833733)
-
-- `npm install --global windows-build-tools` (as admin)
-- `npm run rebuild-robotjs`
-
-Start up the related dev servers in different terminal windows
+Start up the dev server
 
 - `npm run start`
-- `npm run electron-start`
 
-## Building and Packaging on Windows
+### Building and Packaging on Windows
 
-- `npm run build`
-- `npm run build-electron`
-- `npm run package`
+Note: May need VisualStudio for the robotjs compile step:
+https://stackoverflow.com/a/59882818
+
+- `npm run compile`
