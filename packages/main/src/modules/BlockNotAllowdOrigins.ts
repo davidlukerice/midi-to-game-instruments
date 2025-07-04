@@ -2,7 +2,6 @@ import { AbstractSecurityRule } from './AbstractSecurityModule.js';
 import * as Electron from 'electron';
 import { URL } from 'node:url';
 
-const metaEnv = import.meta.env as unknown as Record<string, string>
 
 /**
  * Block navigation to origins not on the allowlist.
@@ -31,7 +30,7 @@ export class BlockNotAllowedOrigins extends AbstractSecurityRule {
       // Prevent navigation
       event.preventDefault();
 
-      if (metaEnv.DEV) {
+      if (import.meta.env.DEV) {
         console.warn(`Blocked navigating to disallowed origin: ${origin}`);
       }
     });

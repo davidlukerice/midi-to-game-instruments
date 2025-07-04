@@ -3,7 +3,6 @@ import { ModuleContext } from '../ModuleContext.js';
 import { shell } from 'electron';
 import { URL } from 'node:url';
 
-const metaEnv = import.meta.env as unknown as Record<string, string>
 
 
 export class ExternalUrls implements AppModule {
@@ -21,7 +20,7 @@ export class ExternalUrls implements AppModule {
 
         if (this.#externalUrls.has(origin)) {
           shell.openExternal(url).catch(console.error);
-        } else if (metaEnv.DEV) {
+        } else if (import.meta.env.DEV) {
           console.warn(`Blocked the opening of a disallowed external origin: ${origin}`);
         }
 

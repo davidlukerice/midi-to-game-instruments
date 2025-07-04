@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { set, cloneDeep } from 'lodash';
-import { midiToGameInstruments } from '@app/preload'
+// import { midiToGameInstruments } from '@app/preload'
+const { midiToGameInstruments } = window;
 
 const defaultState = {
   isLoading: true,

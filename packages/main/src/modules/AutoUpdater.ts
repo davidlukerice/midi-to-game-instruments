@@ -1,7 +1,6 @@
 import { AppModule } from '../AppModule.js';
 import electronUpdater, { type AppUpdater, type Logger } from 'electron-updater';
 
-const metaEnv = import.meta.env as unknown as Record<string, string>
 
 type DownloadNotification = Parameters<AppUpdater['checkForUpdatesAndNotify']>[0];
 
@@ -41,8 +40,8 @@ export class AutoUpdater implements AppModule {
       updater.logger = this.#logger || null;
       updater.fullChangelog = true;
 
-      if (metaEnv.VITE_DISTRIBUTION_CHANNEL) {
-        updater.channel = metaEnv.VITE_DISTRIBUTION_CHANNEL;
+      if (import.meta.env.VITE_DISTRIBUTION_CHANNEL) {
+        updater.channel = import.meta.env.VITE_DISTRIBUTION_CHANNEL;
       }
 
       return await updater.checkForUpdatesAndNotify(this.#notification);
