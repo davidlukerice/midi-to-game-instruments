@@ -141,12 +141,10 @@ function KeySenderProvider(props: { children: ReactNode }) {
       while (internalState.current.octave < noteOctave) {
         if (noteOctave - internalState.current.octave > 1) {
           delayAdded = true
-          midiToGameInstruments.sendSetKeyDelay({
-            delay: multipleOctaveShiftDelay
-          })
+          midiToGameInstruments.sendSetKeyDelay(multipleOctaveShiftDelay)
         } else if (delayAdded) {
           delayAdded = false
-          midiToGameInstruments.sendSetKeyDelay({ delay: 0 })
+          midiToGameInstruments.sendSetKeyDelay(0)
         }
         _addMessage(
           `shift up octave ${internalState.current.octave} towards ${noteOctave}`
@@ -165,13 +163,11 @@ function KeySenderProvider(props: { children: ReactNode }) {
       }
       while (internalState.current.octave > noteOctave) {
         if (internalState.current.octave - noteOctave > 1) {
-          midiToGameInstruments.sendSetKeyDelay({
-            delay: multipleOctaveShiftDelay
-          })
+          midiToGameInstruments.sendSetKeyDelay(multipleOctaveShiftDelay)
           delayAdded = true
         } else if (delayAdded) {
           delayAdded = false
-          midiToGameInstruments.sendSetKeyDelay({ delay: 0 })
+          midiToGameInstruments.sendSetKeyDelay(0)
         }
 
         _addMessage(
@@ -190,7 +186,7 @@ function KeySenderProvider(props: { children: ReactNode }) {
       }
 
       if (delayAdded) {
-        midiToGameInstruments.sendSetKeyDelay({ delay: 0 })
+        midiToGameInstruments.sendSetKeyDelay(0)
       }
 
       return { shiftedOctaves: true, useAltOctaveKey: false }

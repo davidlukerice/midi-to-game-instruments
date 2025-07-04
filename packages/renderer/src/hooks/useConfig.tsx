@@ -75,6 +75,8 @@ function ConfigContextProvider(props: { children: ReactNode }) {
     ;(async () => {
       const response = await midiToGameInstruments.getConfig()
 
+      console.log('Config loaded', response.config)
+
       setState((curr) => ({
         ...curr,
         isLoading: false,

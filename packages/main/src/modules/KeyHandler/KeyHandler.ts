@@ -53,18 +53,18 @@ ipcMain.on(channels.SET_CONFIG, (event, key, value) => {
 })
 
 ipcMain.on(channels.SEND_SET_KEY_DELAY, async (event, eventData) => {
-  const { delay } = eventData
-  console.log(`SEND_SET_KEY_DELAY event ${delay}`)
+  const delay = eventData
+  console.log(`on: SEND_SET_KEY_DELAY event ${delay}`)
   robot.setKeyboardDelay(delay)
 })
 
 ipcMain.on(channels.SEND_KEY_TAP, async (event, eventData) => {
   const { key } = eventData
-  console.log(`SEND_KEY_TAP event ${key}`)
+  console.log(`on: SEND_KEY_TAP event ${key}`)
   try {
     robot.keyTap(key)
   } catch (e) {
-    console.log('SEND_KEY_ON error', e)
+    console.log('on: SEND_KEY_ON error', e)
   }
 })
 
@@ -80,7 +80,7 @@ ipcMain.on(channels.SEND_KEY_ON, async (event, eventData) => {
   try {
     robot.keyToggle(key, 'down')
   } catch (e) {
-    console.log('SEND_KEY_ON error', e)
+    console.log('on: SEND_KEY_ON error', e)
   }
 
   // const doneTime = Date.now();
@@ -93,7 +93,7 @@ ipcMain.on(channels.SEND_KEY_OFF, async (event, eventData) => {
   try {
     robot.keyToggle(key, 'up')
   } catch (e) {
-    console.log('SEND_KEY_OFF error', e)
+    console.log('on: SEND_KEY_OFF error', e)
   }
 })
 

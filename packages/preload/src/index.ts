@@ -22,8 +22,9 @@ const midiToGameInstruments = {
   getConfig: () => ipcRenderer.invoke(channels.GET_CONFIG),
   setConfig: (key: string, value: ConfigValue) =>
     ipcRenderer.send(channels.SET_CONFIG, key, value),
-  sendSetKeyDelay: ({ delay }: { delay: number }) =>
-    ipcRenderer.send(channels.SEND_SET_KEY_DELAY, delay),
+  sendSetKeyDelay: (delay: number) => {
+    ipcRenderer.send(channels.SEND_SET_KEY_DELAY, delay)
+  },
   sendKey: (evt: KeyTapEvent) => ipcRenderer.send(channels.SEND_KEY_TAP, evt)
 }
 
