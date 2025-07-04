@@ -154,4 +154,7 @@ Start up the dev server
 
 ### Building and Packaging on Windows
 
+Note: May need VisualStudio for the robotjs compile step:
+https://stackoverflow.com/a/59882818
+
 - `npm run compile`
