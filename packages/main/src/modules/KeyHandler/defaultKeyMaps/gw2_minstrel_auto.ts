@@ -1,4 +1,4 @@
-import { KeyMap } from "../types.js";
+import { KeyMap } from '../types.js'
 
 export const keyMap: KeyMap = {
   name: 'GW2 - The Minstrel (C) (Auto Octave)',
@@ -47,8 +47,8 @@ export const keyMap: KeyMap = {
     // Sets the internal app's octave (Not yet implemented)
     'F#4': { forceInternalOctave: 0 },
     'G#4': { forceInternalOctave: 1 },
-    'A#4': { forceInternalOctave: 2 },
+    'A#4': { forceInternalOctave: 2 }
   },
   octaveDown: { key: '9' },
-  octaveUp: { key: '0' },
+  octaveUp: { key: '0' }
 }

@@ -1,4 +1,4 @@
-import { KeyMap } from "../types.js";
+import { KeyMap } from '../types.js'
 
 export const keyMap: KeyMap = {
   // Notes in the key of E
@@ -25,8 +25,8 @@ export const keyMap: KeyMap = {
     // Swap octave
     F4: { key: '9' },
     // Stop playing
-    G4: { key: '0' },
+    G4: { key: '0' }
   },
   octaveDown: { key: '9' },
-  octaveUp: { key: '9' },
+  octaveUp: { key: '9' }
 }

@@ -1,6 +1,6 @@
-import { AppModule } from '../AppModule.js';
-import { ModuleContext } from '../ModuleContext.js';
-import installer from 'electron-devtools-installer';
+import { AppModule } from '../AppModule.js'
+import { ModuleContext } from '../ModuleContext.js'
+import installer from 'electron-devtools-installer'
 
 const {
   REDUX_DEVTOOLS,
@@ -14,8 +14,8 @@ const {
   ANGULARJS_BATARANG,
   MOBX_DEVTOOLS,
   CYCLEJS_DEVTOOL,
-  default: installExtension,
-} = installer;
+  default: installExtension
+} = installer
 
 const extensionsDictionary = {
   REDUX_DEVTOOLS,
@@ -28,22 +28,28 @@ const extensionsDictionary = {
   JQUERY_DEBUGGER,
   ANGULARJS_BATARANG,
   MOBX_DEVTOOLS,
-  CYCLEJS_DEVTOOL,
-} as const;
+  CYCLEJS_DEVTOOL
+} as const
 
 export class ChromeDevToolsExtension implements AppModule {
-  readonly #extension: keyof typeof extensionsDictionary;
+  readonly #extension: keyof typeof extensionsDictionary
 
-  constructor({ extension }: { readonly extension: keyof typeof extensionsDictionary }) {
-    this.#extension = extension;
+  constructor({
+    extension
+  }: {
+    readonly extension: keyof typeof extensionsDictionary
+  }) {
+    this.#extension = extension
   }
 
   async enable({ app }: ModuleContext): Promise<void> {
-    await app.whenReady();
-    await installExtension(extensionsDictionary[this.#extension]);
+    await app.whenReady()
+    await installExtension(extensionsDictionary[this.#extension])
   }
 }
 
-export function chromeDevToolsExtension(...args: ConstructorParameters<typeof ChromeDevToolsExtension>) {
-  return new ChromeDevToolsExtension(...args);
+export function chromeDevToolsExtension(
+  ...args: ConstructorParameters<typeof ChromeDevToolsExtension>
+) {
+  return new ChromeDevToolsExtension(...args)
 }

@@ -1,17 +1,17 @@
-import { useConfig } from '../../hooks/useConfig';
+import { useConfig } from '../../hooks/useConfig'
 
-import MIDIControls from '../../components/MIDIControls/index';
-import InstrumentSelector from '../../components/InstrumentSelector';
-import PianoDisplay from '../../components/PianoDisplay';
-import KeyMapDisplay from '../../components/KeyMapDisplay';
-import MIDIMessageDisplay from '../../components/MIDIMessageDisplay';
+import MIDIControls from '../../components/MIDIControls/index'
+import InstrumentSelector from '../../components/InstrumentSelector'
+import PianoDisplay from '../../components/PianoDisplay'
+import KeyMapDisplay from '../../components/KeyMapDisplay'
+import MIDIMessageDisplay from '../../components/MIDIMessageDisplay'
 
-import styles from './styles.module.css';
+import styles from './styles.module.css'
 
-export default MainContent;
+export default MainContent
 
 function MainContent() {
-  const config = useConfig();
+  const config = useConfig()
 
   return (
     <>
@@ -37,5 +37,5 @@ function MainContent() {
         <span>v{config.appVersion}</span>
       </footer>
     </>
-  );
+  )
 }

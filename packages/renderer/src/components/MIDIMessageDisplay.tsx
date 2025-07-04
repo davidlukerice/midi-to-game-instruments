@@ -1,21 +1,21 @@
-import { useEffect, useRef } from 'react';
-import scrollIntoView from 'smooth-scroll-into-view-if-needed';
+import { useEffect, useRef } from 'react'
+import scrollIntoView from 'smooth-scroll-into-view-if-needed'
 
-import { useKeySender } from '../hooks/useKeySender.js';
+import { useKeySender } from '../hooks/useKeySender.js'
 
-import styles from './MIDIMessageDisplay.module.css';
+import styles from './MIDIMessageDisplay.module.css'
 
-export default MIDIMessageDisplay;
+export default MIDIMessageDisplay
 
-function MIDIMessageDisplay(props) {
-  const { sentMessages } = useKeySender();
-  const messagesEndRef = useRef(null);
+function MIDIMessageDisplay() {
+  const { sentMessages } = useKeySender()
+  const messagesEndRef = useRef(null)
 
   const scrollToBottom = () => {
-    scrollIntoView(messagesEndRef.current);
-  };
+    scrollIntoView(messagesEndRef.current)
+  }
 
-  useEffect(scrollToBottom, [sentMessages]);
+  useEffect(scrollToBottom, [sentMessages])
 
   return (
     <div className={styles.MIDIMessageDisplay}>
@@ -24,8 +24,8 @@ function MIDIMessageDisplay(props) {
         {sentMessages.map((message, i) => (
           <div key={i}>{message}</div>
         ))}
-        <div key="endDiv" ref={messagesEndRef} />
+        <div key='endDiv' ref={messagesEndRef} />
       </div>
     </div>
-  );
+  )
 }

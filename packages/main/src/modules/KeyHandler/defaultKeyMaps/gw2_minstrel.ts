@@ -1,4 +1,4 @@
-import { KeyMap } from "../types.js";
+import { KeyMap } from '../types.js'
 
 export const keyMap: KeyMap = {
   name: 'GW2 - The Minstrel (C)',
@@ -14,6 +14,6 @@ export const keyMap: KeyMap = {
     C5: { key: '8' },
 
     'C#4': { key: '9' },
-    'D#4': { key: '0' },
-  },
+    'D#4': { key: '0' }
+  }
 }

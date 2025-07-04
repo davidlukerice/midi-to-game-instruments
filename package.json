@@ -38,9 +38,9 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
-    "@types/node": "24.0.3",
+    "@types/node": "24.0.10",
     "browserslist-config-erb": "^0.0.3",
-    "electron": "36.5.0",
+    "electron": "37.2.0",
     "electron-builder": "26.0.12",
     "glob": "11.0.3",
     "husky": "^9.1.7",
@@ -74,18 +74,5 @@
   },
   "browserslist": [
     "extends browserslist-config-erb"
-  ],
-  "prettier": {
-    "overrides": [
-      {
-        "files": [
-          ".prettierrc",
-          ".eslintrc"
-        ],
-        "options": {
-          "parser": "json"
-        }
-      }
-    ]
-  }
+  ]
 }

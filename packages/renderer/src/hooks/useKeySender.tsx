@@ -1,35 +1,45 @@
-import React, { useEffect, useContext, useState, useRef } from 'react';
-// import { midiToGameInstruments } from '@app/preload'
+import {
+  createContext,
+  useEffect,
+  useContext,
+  useState,
+  useRef,
+  type ReactNode
+} from 'react'
+import { midiToGameInstruments } from '@app/preload'
 
-const { midiToGameInstruments } = window;
+import { useMIDI } from '../hooks/useMIDI'
+import { useConfig } from '../hooks/useConfig'
 
-import { useMIDI } from '../hooks/useMIDI';
-import { useConfig } from '../hooks/useConfig';
+type KeySenderState = {
+  sentMessages: string[]
+  octave: number
+}
 
-const keySenderContext = React.createContext();
+const defaultState: KeySenderState = {
+  sentMessages: [],
+  octave: 1
+}
 
-export { KeySenderProvider, useKeySender };
+const keySenderContext = createContext(defaultState)
 
-const MESSAGE_LIMIT = 100;
+export { KeySenderProvider, useKeySender }
 
-function KeySenderProvider(props) {
-  const { children } = props;
-  const { isLoading: configIsLoading, config } = useConfig();
+const MESSAGE_LIMIT = 100
 
-  const internalState = useRef({
-    octave: 1,
-  });
+function KeySenderProvider(props: { children: ReactNode }) {
+  const { children } = props
+  const { isLoading: configIsLoading, config } = useConfig()
 
-  const [state, setState] = useState({
-    sentMessages: [],
-    octave: 1,
-  });
+  const internalState = useRef({ octave: 1 })
 
-  const { selectedInput } = useMIDI();
+  const [state, setState] = useState(defaultState)
+
+  const { selectedInput } = useMIDI()
 
   useEffect(() => {
     if (configIsLoading) {
-      return;
+      return
     }
 
     const {
@@ -37,50 +47,50 @@ function KeySenderProvider(props) {
       autoSwapOctave,
       keyMaps,
       selectedKeyMapIndex,
-      multipleOctaveShiftDelay,
-    } = config;
+      multipleOctaveShiftDelay
+    } = config
 
     if (!selectedInput || !sendNotes) {
-      return;
+      return
     }
 
-    const keyMap = keyMaps[selectedKeyMapIndex];
+    const keyMap = keyMaps[selectedKeyMapIndex]
 
     // TODO: Allow toggle between note on/off and tap?
-    selectedInput.addListener('noteon', 'all', _noteOnHandler);
+    selectedInput.addListener('noteon', 'all', _noteOnHandler)
     //selectedInput.addListener('noteoff', 'all', noteOffHandler);
 
     return () => {
       if (!selectedInput) {
-        return;
+        return
       }
-      selectedInput.removeListener('noteon', 'all', _noteOnHandler);
+      selectedInput.removeListener('noteon', 'all', _noteOnHandler)
       //selectedInput.removeListener('noteoff', 'all', noteOffHandler);
-    };
+    }
 
     function _noteOnHandler(e) {
-      const mapKey = `${e.note.name}${e.note.octave}`;
-      const note = keyMap.notes[mapKey];
-      const keyTime = Date.now();
+      const mapKey = `${e.note.name}${e.note.octave}`
+      const note = keyMap.notes[mapKey]
+      const keyTime = Date.now()
 
       if (!note?.key) {
-        _addMessage(`noteOn ${mapKey} -> 'None'`);
-        return;
+        _addMessage(`noteOn ${mapKey} -> 'None'`)
+        return
       }
 
       const { useAltOctaveKey } = autoSwapOctave
         ? _handleOctaveShift({ note })
-        : { shiftedOctaves: false, useAltOctaveKey: false };
+        : { shiftedOctaves: false, useAltOctaveKey: false }
 
-      const keyToSend = useAltOctaveKey ? note.altOctaveKey : note.key;
+      const keyToSend = useAltOctaveKey ? note.altOctaveKey : note.key
 
       setState((curr) => ({
         ...curr,
-        octave: internalState.current.octave,
-      }));
+        octave: internalState.current.octave
+      }))
 
-      _addMessage(`noteOn ${mapKey} -> '${keyToSend}' : ${note?.octave}`);
-      _sendKey(keyToSend, keyTime);
+      _addMessage(`noteOn ${mapKey} -> '${keyToSend}' : ${note?.octave}`)
+      _sendKey(keyToSend, keyTime)
       // _sendKey(channels.SEND_KEY_ON, note.key, keyTime);
     }
 
@@ -104,86 +114,86 @@ function KeySenderProvider(props) {
      */
     function _handleOctaveShift({ note }) {
       if (!note.hasOwnProperty('octave')) {
-        return { shiftedOctaves: false, useAltOctaveKey: false };
+        return { shiftedOctaves: false, useAltOctaveKey: false }
       }
 
-      const noteOctave = note.octave;
+      const noteOctave = note.octave
 
       if (noteOctave === internalState.current.octave) {
-        return { shiftedOctaves: false, useAltOctaveKey: false };
+        return { shiftedOctaves: false, useAltOctaveKey: false }
       }
       if (
         note.hasOwnProperty('altOctave') &&
         note.altOctave === internalState.current.octave
       ) {
-        return { shiftedOctaves: false, useAltOctaveKey: true };
+        return { shiftedOctaves: false, useAltOctaveKey: true }
       }
 
-      let delayAdded = false;
+      let delayAdded = false
 
       // TODO: May be able to shift less octaves if using an alt octave key?
 
-      let octaveShifts = 0;
+      let octaveShifts = 0
       while (internalState.current.octave < noteOctave) {
         if (noteOctave - internalState.current.octave > 1) {
-          delayAdded = true;
+          delayAdded = true
           midiToGameInstruments.sendSetKeyDelay({
-            delay: multipleOctaveShiftDelay,
-          });
+            delay: multipleOctaveShiftDelay
+          })
         } else if (delayAdded) {
-          delayAdded = false;
-          midiToGameInstruments.sendSetKeyDelay({ delay: 0 });
+          delayAdded = false
+          midiToGameInstruments.sendSetKeyDelay({ delay: 0 })
         }
         _addMessage(
           `shift up octave ${internalState.current.octave} towards ${noteOctave}`
-        );
-        const upKey = keyMap.octaveUp.key;
+        )
+        const upKey = keyMap.octaveUp.key
         // TODO: add delays to fix multiple octave jumps?
-        _sendKey(upKey);
-        internalState.current.octave += 1;
+        _sendKey(upKey)
+        internalState.current.octave += 1
 
-        octaveShifts += 1;
+        octaveShifts += 1
         if (octaveShifts > 10) {
-          throw new Error('Too many octave shifts...');
+          throw new Error('Too many octave shifts...')
         }
       }
       while (internalState.current.octave > noteOctave) {
         if (internalState.current.octave - noteOctave > 1) {
           midiToGameInstruments.sendSetKeyDelay({
-            delay: multipleOctaveShiftDelay,
-          });
-          delayAdded = true;
+            delay: multipleOctaveShiftDelay
+          })
+          delayAdded = true
         } else if (delayAdded) {
-          delayAdded = false;
-          midiToGameInstruments.sendSetKeyDelay({ delay: 0 });
+          delayAdded = false
+          midiToGameInstruments.sendSetKeyDelay({ delay: 0 })
         }
 
         _addMessage(
           `shift down octave ${internalState.current.octave} towards ${noteOctave}`
-        );
-        const downKey = keyMap.octaveDown.key;
-        _sendKey(downKey);
-        internalState.current.octave -= 1;
+        )
+        const downKey = keyMap.octaveDown.key
+        _sendKey(downKey)
+        internalState.current.octave -= 1
 
-        octaveShifts += 1;
+        octaveShifts += 1
         if (octaveShifts > 10) {
-          throw new Error('Too many octave shifts...');
+          throw new Error('Too many octave shifts...')
         }
       }
 
       if (delayAdded) {
-        midiToGameInstruments.sendSetKeyDelay({ delay: 0 });
+        midiToGameInstruments.sendSetKeyDelay({ delay: 0 })
       }
 
-      return { shiftedOctaves: true, useAltOctaveKey: false };
+      return { shiftedOctaves: true, useAltOctaveKey: false }
     }
-  }, [configIsLoading, selectedInput, config]);
+  }, [configIsLoading, selectedInput, config])
 
   return (
-    <keySenderContext.Provider value={state} >
+    <keySenderContext.Provider value={state}>
       {children}
     </keySenderContext.Provider>
-  );
+  )
 
   function _addMessage(message) {
     setState((curr) => ({
@@ -191,22 +201,22 @@ function KeySenderProvider(props) {
       sentMessages: [...curr.sentMessages, message].slice(
         curr.sentMessages.length - MESSAGE_LIMIT,
         MESSAGE_LIMIT
-      ),
-    }));
+      )
+    }))
   }
 
   function _sendKey(key, time) {
     midiToGameInstruments.sendKey({
       key: key,
-      eventTime: time,
-    });
+      eventTime: time
+    })
   }
 }
 
 function useKeySender() {
-  const context = useContext(keySenderContext);
+  const context = useContext(keySenderContext)
   if (!context) {
-    throw new Error('useKeySender must be used within a keySenderContext');
+    throw new Error('useKeySender must be used within a keySenderContext')
   }
-  return context;
+  return context
 }

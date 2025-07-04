@@ -1,20 +1,19 @@
-import { app, shell, MenuItemConstructorOptions, MenuItem } from 'electron';
-import ElectronStore from 'electron-store';
+import { app, shell, MenuItemConstructorOptions, MenuItem } from 'electron'
+import ElectronStore from 'electron-store'
 
-const isMac = process.platform === 'darwin';
+const isMac = process.platform === 'darwin'
 
-export { generateMenuTemplate };
+export { generateMenuTemplate }
 
 type MenuTemplateItem = MenuItemConstructorOptions | MenuItem
 
-
 type ConfigStore = ElectronStore<{
-  selectedInputName: unknown;
-  selectedKeyMapIndex: unknown;
-  sendNotes: unknown;
-  autoSwapOctave: unknown;
-  multipleOctaveShiftDelay: unknown;
-  keyMaps: unknown;
+  selectedInputName: unknown
+  selectedKeyMapIndex: unknown
+  sendNotes: unknown
+  autoSwapOctave: unknown
+  multipleOctaveShiftDelay: unknown
+  keyMaps: unknown
 }>
 
 function generateMenuTemplate(store: ConfigStore): MenuTemplateItem[] {
@@ -28,8 +27,8 @@ function generateMenuTemplate(store: ConfigStore): MenuTemplateItem[] {
       { role: 'hide' },
       { role: 'unhide' },
       { type: 'separator' },
-      { role: 'quit' },
-    ],
+      { role: 'quit' }
+    ]
   }
 
   const fileItem: MenuTemplateItem = {
@@ -38,33 +37,36 @@ function generateMenuTemplate(store: ConfigStore): MenuTemplateItem[] {
       {
         label: 'edit config',
         click: () => {
-          store.openInEditor();
-        },
+          store.openInEditor()
+        }
       },
       {
         label: 'open config folder',
         click: () => {
-          shell.showItemInFolder(store.path);
-        },
+          shell.showItemInFolder(store.path)
+        }
       },
       {
         label: 'clear config (requires restart)',
         click: () => {
-          store.clear();
-        },
+          store.clear()
+        }
       },
-      { role: isMac ? 'close' : 'quit' },
-    ],
+      { role: isMac ? 'close' : 'quit' }
+    ]
   }
-
 
   const macEditItems: MenuItemConstructorOptions[] = [
     { role: 'pasteAndMatchStyle' },
     { role: 'delete' },
     { role: 'selectAll' },
-    { type: 'separator' },
+    { type: 'separator' }
   ]
-  const windowsEditItems: MenuItemConstructorOptions[] = [{ role: 'delete' }, { type: 'separator' }, { role: 'selectAll' }]
+  const windowsEditItems: MenuItemConstructorOptions[] = [
+    { role: 'delete' },
+    { type: 'separator' },
+    { role: 'selectAll' }
+  ]
   const editItem: MenuTemplateItem = {
     label: 'Edit',
     submenu: [
@@ -74,8 +76,8 @@ function generateMenuTemplate(store: ConfigStore): MenuTemplateItem[] {
       { role: 'cut' },
       { role: 'copy' },
       { role: 'paste' },
-      ...(isMac ? macEditItems : windowsEditItems),
-    ],
+      ...(isMac ? macEditItems : windowsEditItems)
+    ]
   }
 
   const viewItem: MenuTemplateItem = {
@@ -89,8 +91,8 @@ function generateMenuTemplate(store: ConfigStore): MenuTemplateItem[] {
       { role: 'zoomin' },
       { role: 'zoomout' },
       { type: 'separator' },
-      { role: 'togglefullscreen' },
-    ],
+      { role: 'togglefullscreen' }
+    ]
   } as MenuTemplateItem
 
   const windowItem: MenuTemplateItem = {
@@ -100,13 +102,13 @@ function generateMenuTemplate(store: ConfigStore): MenuTemplateItem[] {
       { role: 'zoom' },
       ...(isMac
         ? [
-          { type: 'separator' },
-          { role: 'front' },
-          { type: 'separator' },
-          { role: 'window' },
-        ]
-        : [{ role: 'close' }]),
-    ],
+            { type: 'separator' },
+            { role: 'front' },
+            { type: 'separator' },
+            { role: 'window' }
+          ]
+        : [{ role: 'close' }])
+    ]
   } as MenuTemplateItem
 
   const helpItem: MenuTemplateItem = {
@@ -117,25 +119,13 @@ function generateMenuTemplate(store: ConfigStore): MenuTemplateItem[] {
         click: async () => {
           await shell.openExternal(
             'https://github.com/davidlukerice/midi-to-game-instruments'
-          );
-        },
-      },
-    ],
+          )
+        }
+      }
+    ]
   }
 
-
-  return isMac ? [
-    iconItem,
-    fileItem,
-    editItem,
-    viewItem,
-    windowItem,
-    helpItem,
-  ] : [
-    fileItem,
-    editItem,
-    viewItem,
-    windowItem,
-    helpItem,
-  ];
+  return isMac
+    ? [iconItem, fileItem, editItem, viewItem, windowItem, helpItem]
+    : [fileItem, editItem, viewItem, windowItem, helpItem]
 }

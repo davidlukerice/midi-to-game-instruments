@@ -1,4 +1,4 @@
-import { KeyMap } from "../types.js";
+import { KeyMap } from '../types.js'
 
 export const keyMap: KeyMap = {
   // Notes are in key of C, but the flute plays
@@ -24,8 +24,8 @@ export const keyMap: KeyMap = {
     C6: { key: '8', octave: 2 },
 
     'C#4': { key: '9' },
-    'D#4': { key: '0' },
+    'D#4': { key: '0' }
   },
   octaveDown: { key: '9' },
-  octaveUp: { key: '9' },
+  octaveUp: { key: '9' }
 }

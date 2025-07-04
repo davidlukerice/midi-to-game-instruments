@@ -1,71 +1,96 @@
-import { WebMidi } from 'webmidi';
-import React, { useEffect, useState, useContext } from 'react';
-import { useConfig } from './useConfig';
+import { WebMidi, type Input, type Output } from 'webmidi'
+import {
+  createContext,
+  useEffect,
+  useState,
+  useContext,
+  type ReactNode
+} from 'react'
+import { useConfig } from './useConfig'
 
-const MIDIContext = React.createContext();
+type MIDIState = {
+  isLoading: boolean
+  error: unknown
+  message: string
+  inputs: Input[]
+  outputs: Output[]
+  selectedInput: Input | null
+  selectInputByName: (name: string) => void
+}
 
-export { MidiContextProvider, useMIDI };
+const defaultState: MIDIState = {
+  isLoading: true,
+  error: null,
+  message: '',
+  inputs: [],
+  outputs: [],
+  selectedInput: null,
+  selectInputByName: () => {}
+}
 
-function MidiContextProvider(props) {
-  const { children } = props;
+const MIDIContext = createContext(defaultState)
 
-  const config = useConfig();
+// eslint-disable-next-line react-refresh/only-export-components
+export { MidiContextProvider, useMIDI }
+
+function MidiContextProvider(props: { children: ReactNode }) {
+  const { children } = props
+
+  const config = useConfig()
   const [state, setState] = useState({
-    isLoading: true,
-    error: null,
-    message: '',
-    inputs: [],
-    outputs: [],
-    selectedInput: null,
-    selectInputByName,
-  });
+    ...defaultState,
+    selectInputByName
+  })
 
   useEffect(() => {
     if (config.isLoading) {
-      return;
+      return
     }
 
-    WebMidi.enable(function (err) {
-      if (err) {
-        setState((curr) => ({
-          ...curr,
-          isLoading: false,
-          error: err,
-        }));
-      } else {
-        const input =
-          WebMidi.getInputByName(config.config.selectedInputName) ||
-          WebMidi.getInputByName(WebMidi.inputs[0]?.name) ||
-          null;
+    WebMidi.enable({
+      callback: (err: unknown) => {
+        if (err) {
+          setState((curr) => ({
+            ...curr,
+            isLoading: false,
+            error: err
+          }))
+        } else {
+          const input =
+            WebMidi.getInputByName(config.config.selectedInputName) ||
+            WebMidi.getInputByName(WebMidi.inputs[0]?.name) ||
+            null
 
-        setState((curr) => ({
-          ...curr,
-          isLoading: false,
-          message: 'midi enabled',
-          inputs: WebMidi.inputs,
-          outputs: WebMidi.outputs,
-          selectedInput: input,
-        }));
+          setState((curr) => ({
+            ...curr,
+            isLoading: false,
+            message: 'midi enabled',
+            inputs: WebMidi.inputs,
+            outputs: WebMidi.outputs,
+            selectedInput: input
+          }))
+        }
       }
-    });
-  }, [config]);
+    })
+  }, [config])
 
-  return <MIDIContext.Provider value={state}> {children} </MIDIContext.Provider>;
+  return <MIDIContext.Provider value={state}> {children} </MIDIContext.Provider>
 
-  function selectInputByName(inputName) {
-    config.setValue('selectedInputName', inputName);
-    const input = WebMidi.getInputByName(inputName);
+  function selectInputByName(inputName: string) {
+    config.setValue('selectedInputName', inputName)
+    const input = WebMidi.getInputByName(inputName)
+
     setState((curr) => ({
       ...curr,
-      selectedInput: input,
-    }));
+      selectedInput: input ?? null
+    }))
   }
 }
 
 function useMIDI() {
-  const context = useContext(MIDIContext);
+  const context = useContext(MIDIContext)
   if (!context) {
-    throw new Error('useMIDI must be used within a MIDIContext');
+    throw new Error('useMIDI must be used within a MIDIContext')
   }
-  return context;
+  return context
 }

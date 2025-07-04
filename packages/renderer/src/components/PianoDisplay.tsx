@@ -1,9 +1,8 @@
+import { useKeySender } from '../hooks/useKeySender.js'
 
-import { useKeySender } from '../hooks/useKeySender.js';
-
-export default PianoDisplay;
+export default PianoDisplay
 
 function PianoDisplay() {
-  const { octave } = useKeySender();
-  return <div>Octave {octave}</div>;
+  const { octave } = useKeySender()
+  return <div>Octave {octave}</div>
 }

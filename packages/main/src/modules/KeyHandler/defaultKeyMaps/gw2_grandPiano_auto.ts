@@ -1,4 +1,4 @@
-import { KeyMap } from "../types.js";
+import { KeyMap } from '../types.js'
 
 // TODO
 export const keyMap: KeyMap = {
@@ -52,7 +52,7 @@ export const keyMap: KeyMap = {
     A5: { key: '6', octave: 2 },
     'A#5': { key: 'f5', octave: 0 }, // Bf5
     B5: { key: '7', octave: 2 },
-    C6: { key: '8', octave: 2 },
+    C6: { key: '8', octave: 2 }
 
     // TODO: Minor Chords
     // TODO: Major Chords
@@ -70,5 +70,5 @@ export const keyMap: KeyMap = {
     // 'A#4': { forceInternalOctave: 2 },
   },
   octaveDown: { key: '9' },
-  octaveUp: { key: '0' },
+  octaveUp: { key: '0' }
 }
