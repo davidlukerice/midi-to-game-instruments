@@ -16,7 +16,7 @@ function KeyMapDisplay() {
 
   return (
     <div className={styles.container}>
-      <h3>KeyMap</h3>
+      <h3 className={styles.header}>KeyMap</h3>
       <div className={styles.jsonContainer}>
         <JsonEditor data={keyMap} viewOnly theme={githubLightTheme} />
       </div>

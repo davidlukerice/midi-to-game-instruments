@@ -1,5 +1,6 @@
 .controlContainer {
   display: flex;
+  align-items: center;
 }
 
 .controlContainer > * {
