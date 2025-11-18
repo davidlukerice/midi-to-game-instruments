@@ -30,7 +30,7 @@
     "browserslist-config-erb": "^0.0.3",
     "electron": "37.2.0",
     "electron-builder": "26.0.12",
-    "glob": "11.0.3",
+    "glob": "11.1.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
     "mkdirp": "^3.0.1",
