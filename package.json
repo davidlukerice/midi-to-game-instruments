@@ -29,7 +29,7 @@
     "@types/node": "24.0.10",
     "browserslist-config-erb": "^0.0.3",
     "electron": "37.2.0",
-    "electron-builder": "26.0.12",
+    "electron-builder": "26.6.0",
     "glob": "11.0.3",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
